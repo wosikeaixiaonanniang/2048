@@ -1,0 +1,10 @@
+#pragma once
+#include <iostream>
+#include <cmath>
+#include <string>
+const int row = 4; //4行
+const int col = 4; //4列
+int score = 0;     //总得分
+
+
+

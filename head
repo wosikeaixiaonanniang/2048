@@ -2,9 +2,6 @@
 #include <iostream>
 #include <cmath>
 #include <string>
-const int row = 4; //4ÐÐ
-const int col = 4; //4ÁÐ
-int score = 0;     //×ÜµÃ·Ö
-
-
-
+const int row = 4; //4è¡Œ
+const int col = 4; //4åˆ—
+int score = 0;     //æ€»å¾—åˆ†

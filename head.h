@@ -2,9 +2,9 @@
 #include <math.h>
 #include <string.h>
 #include <easyx.h>
-const int row = 4;//4行
-const int col = 4;//4列
-const int score = 0;//总得分
+const int row = 4;//4脨脨
+const int col = 4;//4脕脨
+const int score = 0;//脳脺碌脙路脰
 void thirdmenu();
 bool button(int x1, int y1, int x2, int y2, int msgx, int msgy);
 void gamemenu(int board[4][4]);

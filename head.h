@@ -1,6 +1,6 @@
 #pragma once
 #include <math.h>
-#include <string.h>
+#include <string>
 #include <easyx.h>
 const int row = 4;//4ÐÐ
 const int col = 4;//4ÁÐ

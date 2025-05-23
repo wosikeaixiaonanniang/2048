@@ -5,14 +5,7 @@
 const int row = 4;//4ÐÐ
 const int col = 4;//4ÁÐ
 const int score = 0;//×ÜµÃ·Ö
-struct player
-{
-	string name;
-	int score;
-	int step;
-	int rank;
-	struct player* next;
-};
+
 void thirdmenu();
 bool button(int x1, int y1, int x2, int y2, int msgx, int msgy);
 void gamemenu(int board[4][4]);

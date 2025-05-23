@@ -3,9 +3,9 @@
 #include <iostream>
 void generateRandomTile(int board[4][4]) {
     int emptyCells = 0;
-    int emptyPositions[16][2]; // ´æ´¢ËùÓĞ¿Õ°×¸ñ×ÓµÄ×ø±ê
+    int emptyPositions[16][2]; // å­˜å‚¨æ‰€æœ‰ç©ºç™½æ ¼å­çš„åæ ‡
 
-    // ÊÕ¼¯ËùÓĞ¿Õ°×¸ñ×Ó
+    // æ”¶é›†æ‰€æœ‰ç©ºç™½æ ¼å­
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (board[i][j] == 0) {
@@ -16,10 +16,10 @@ void generateRandomTile(int board[4][4]) {
         }
     }
 
-    // Èç¹ûÓĞ¿Õ°×¸ñ×Ó£¬Ëæ»úÑ¡ÔñÒ»¸öÎ»ÖÃ·ÅÖÃ2»ò4
+    // å¦‚æœæœ‰ç©ºç™½æ ¼å­ï¼Œéšæœºé€‰æ‹©ä¸€ä¸ªä½ç½®æ”¾ç½®2æˆ–4
     if (emptyCells > 0) {
         int pos = rand() % emptyCells;
-        int value = (rand() % 10 == 0) ? 4 : 2; // 10%¸ÅÂÊÉú³É4
+        int value = (rand() % 10 == 0) ? 4 : 2; // 10%æ¦‚ç‡ç”Ÿæˆ4
         board[emptyPositions[pos][0]][emptyPositions[pos][1]] = value;
     }
 }
@@ -28,24 +28,24 @@ bool slideAndMerge(int line[4], int& score) {
     int temp[4] = { 0 };
     int index = 0;
 
-    // 1. ÒÆ¶¯ËùÓĞÊı×Öµ½×ó²à£¨È¥³ı0£©
+    // 1. ç§»åŠ¨æ‰€æœ‰æ•°å­—åˆ°å·¦ä¾§ï¼ˆå»é™¤0ï¼‰
     for (int i = 0; i < 4; i++) {
         if (line[i] != 0) {
             temp[index++] = line[i];
         }
     }
 
-    // 2. ºÏ²¢ÏàÁÚÏàÍ¬Êı×Ö
+    // 2. åˆå¹¶ç›¸é‚»ç›¸åŒæ•°å­—
     for (int i = 0; i < 3; i++) {
         if (temp[i] != 0 && temp[i] == temp[i + 1]) {
             temp[i] *= 2;
-            score += temp[i]; // ¼Ó·Ö
+            score += temp[i]; // åŠ åˆ†
             temp[i + 1] = 0;
             moved = true;
         }
     }
 
-    // 3. ÔÙ´ÎÒÆ¶¯£¨´¦ÀíºÏ²¢ºó¿ÉÄÜ³öÏÖµÄ¿ÕÎ»£©
+    // 3. å†æ¬¡ç§»åŠ¨ï¼ˆå¤„ç†åˆå¹¶åå¯èƒ½å‡ºç°çš„ç©ºä½ï¼‰
     index = 0;
     for (int i = 0; i < 4; i++) {
         line[i] = 0;
@@ -54,7 +54,7 @@ bool slideAndMerge(int line[4], int& score) {
         }
     }
 
-    // ¼ì²éÊÇ·ñ·¢ÉúÒÆ¶¯£¨ÓëÔ­Ê¼Êı¾İ±È½Ï£©
+    // æ£€æŸ¥æ˜¯å¦å‘ç”Ÿç§»åŠ¨ï¼ˆä¸åŸå§‹æ•°æ®æ¯”è¾ƒï¼‰
     for (int i = 0; i < 4; i++) {
         if (line[i] != temp[i]) {
             moved = true;
@@ -64,52 +64,52 @@ bool slideAndMerge(int line[4], int& score) {
     return moved;
 }
 
-// Ö÷Âß¼­º¯Êı
+// ä¸»é€»è¾‘å‡½æ•°
 void numberadd(int board[4][4], int& score, int direction) {
     bool moved = false;
     int temp[4];
 
     switch (direction) {
     case DIR_UP:
-        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÉÏµ½ÏÂ£©
+        // å¤„ç†æ¯ä¸€åˆ—ï¼ˆä»ä¸Šåˆ°ä¸‹ï¼‰
         for (int j = 0; j < 4; j++) {
-            // ÌáÈ¡Ò»ÁĞ
+            // æå–ä¸€åˆ—
             for (int i = 0; i < 4; i++) temp[i] = board[i][j];
-            // ´¦ÀíÕâÒ»ÁĞ
+            // å¤„ç†è¿™ä¸€åˆ—
             if (slideAndMerge(temp, score)) moved = true;
-            // Ğ´»Ø
+            // å†™å›
             for (int i = 0; i < 4; i++) board[i][j] = temp[i];
         }
         break;
 
     case DIR_DOWN:
-        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÏÂµ½ÉÏ£©
+        // å¤„ç†æ¯ä¸€åˆ—ï¼ˆä»ä¸‹åˆ°ä¸Šï¼‰
         for (int j = 0; j < 4; j++) {
-            // ÌáÈ¡Ò»ÁĞ£¨·´Ïò£©
+            // æå–ä¸€åˆ—ï¼ˆåå‘ï¼‰
             for (int i = 0; i < 4; i++) temp[3 - i] = board[i][j];
-            // ´¦ÀíÕâÒ»ÁĞ
+            // å¤„ç†è¿™ä¸€åˆ—
             if (slideAndMerge(temp, score)) moved = true;
-            // Ğ´»Ø£¨·´Ïò£©
+            // å†™å›ï¼ˆåå‘ï¼‰
             for (int i = 0; i < 4; i++) board[i][j] = temp[3 - i];
         }
         break;
 
     case DIR_LEFT:
-        // ´¦ÀíÃ¿Ò»ĞĞ£¨´Ó×óµ½ÓÒ£©
+        // å¤„ç†æ¯ä¸€è¡Œï¼ˆä»å·¦åˆ°å³ï¼‰
         for (int i = 0; i < 4; i++) {
-            // Ö±½Ó´¦ÀíĞĞ
+            // ç›´æ¥å¤„ç†è¡Œ
             if (slideAndMerge(board[i], score)) moved = true;
         }
         break;
 
     case DIR_RIGHT:
-        // ´¦ÀíÃ¿Ò»ĞĞ£¨´ÓÓÒµ½×ó£©
+        // å¤„ç†æ¯ä¸€è¡Œï¼ˆä»å³åˆ°å·¦ï¼‰
         for (int i = 0; i < 4; i++) {
-            // ÌáÈ¡Ò»ĞĞ£¨·´Ïò£©
+            // æå–ä¸€è¡Œï¼ˆåå‘ï¼‰
             for (int j = 0; j < 4; j++) temp[3 - j] = board[i][j];
-            // ´¦ÀíÕâÒ»ĞĞ
+            // å¤„ç†è¿™ä¸€è¡Œ
             if (slideAndMerge(temp, score)) moved = true;
-            // Ğ´»Ø£¨·´Ïò£©
+            // å†™å›ï¼ˆåå‘ï¼‰
             for (int j = 0; j < 4; j++) board[i][j] = temp[3 - j];
         }
         break;

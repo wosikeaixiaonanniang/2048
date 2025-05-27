@@ -11,7 +11,11 @@
 const int row = 4;
 const int col = 4;
 const int score = 0;
-
+#define DIR_UP    1
+#define DIR_DOWN  2
+#define DIR_LEFT  3
+#define DIR_RIGHT 4
+const int BOX_COUNT = 30; // 横框数量
 struct GameTime {
     int hours;
     int minutes;

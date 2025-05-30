@@ -77,7 +77,7 @@ GameTime getGameTime(GameTimer& timer)
 // 记录分数到文件
 void record(const string name, int score, int step)
 {
-    const string filename = "game_records.txt";
+    const string filename = "records.txt";
     vector<Player> records;
 
     // 读取现有记录
@@ -127,7 +127,7 @@ void record(const string name, int score, int step)
 // 显示所有记录
 Player* showrecord()
 {
-    const string filename = "game_records.txt";
+    const string filename = "records.txt";
     Player* head = nullptr;
     Player* tail = nullptr;
 

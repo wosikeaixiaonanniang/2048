@@ -1,8 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
-#include <iostream>
-void generateRandomTile(int board[4][4])
-{
+
+void generateRandomTile(int board[4][4]) {
     int emptyCells = 0;
     int emptyPositions[16][2]; // 存储所有空白格子的坐标
 
@@ -24,8 +23,7 @@ void generateRandomTile(int board[4][4])
         board[emptyPositions[pos][0]][emptyPositions[pos][1]] = value;
     }
 }
-bool slideAndMerge(int line[4], int& score)
-{
+bool slideAndMerge(int line[4], int& score) {
     bool moved = false;
     int temp[4] = { 0 };
     int index = 0;
@@ -67,8 +65,7 @@ bool slideAndMerge(int line[4], int& score)
 }
 
 // 主逻辑函数
-void numberadd(int board[4][4], int& score, int direction)
-{
+void numberadd(int board[4][4], int& score, int direction) {
     bool moved = false;
     int temp[4];
 
@@ -77,14 +74,11 @@ void numberadd(int board[4][4], int& score, int direction)
         // 处理每一列（从上到下）
         for (int j = 0; j < 4; j++) {
             // 提取一列
-            for (int i = 0; i < 4; i++)
-                temp[i] = board[i][j];
+            for (int i = 0; i < 4; i++) temp[i] = board[i][j];
             // 处理这一列
-            if (slideAndMerge(temp, score))
-                moved = true;
+            if (slideAndMerge(temp, score)) moved = true;
             // 写回
-            for (int i = 0; i < 4; i++)
-                board[i][j] = temp[i];
+            for (int i = 0; i < 4; i++) board[i][j] = temp[i];
         }
         break;
 
@@ -92,14 +86,11 @@ void numberadd(int board[4][4], int& score, int direction)
         // 处理每一列（从下到上）
         for (int j = 0; j < 4; j++) {
             // 提取一列（反向）
-            for (int i = 0; i < 4; i++)
-                temp[3 - i] = board[i][j];
+            for (int i = 0; i < 4; i++) temp[3 - i] = board[i][j];
             // 处理这一列
-            if (slideAndMerge(temp, score))
-                moved = true;
+            if (slideAndMerge(temp, score)) moved = true;
             // 写回（反向）
-            for (int i = 0; i < 4; i++)
-                board[i][j] = temp[3 - i];
+            for (int i = 0; i < 4; i++) board[i][j] = temp[3 - i];
         }
         break;
 
@@ -107,8 +98,7 @@ void numberadd(int board[4][4], int& score, int direction)
         // 处理每一行（从左到右）
         for (int i = 0; i < 4; i++) {
             // 直接处理行
-            if (slideAndMerge(board[i], score))
-                moved = true;
+            if (slideAndMerge(board[i], score)) moved = true;
         }
         break;
 
@@ -116,14 +106,11 @@ void numberadd(int board[4][4], int& score, int direction)
         // 处理每一行（从右到左）
         for (int i = 0; i < 4; i++) {
             // 提取一行（反向）
-            for (int j = 0; j < 4; j++)
-                temp[3 - j] = board[i][j];
+            for (int j = 0; j < 4; j++) temp[3 - j] = board[i][j];
             // 处理这一行
-            if (slideAndMerge(temp, score))
-                moved = true;
+            if (slideAndMerge(temp, score)) moved = true;
             // 写回（反向）
-            for (int j = 0; j < 4; j++)
-                board[i][j] = temp[3 - j];
+            for (int j = 0; j < 4; j++) board[i][j] = temp[3 - j];
         }
         break;
     }

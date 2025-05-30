@@ -288,8 +288,8 @@ void gamemenu(int board[4][4],bool issignin)
 	
 	//给格子上色和数字显示
 	//生产2个随机数
-	generateRandomTile(board);
-	generateRandomTile(board);
+	newnumber(board, score, 4);
+	newnumber(board, score, 4);
 	GameTimer timer;
 	startTimer(timer);
 	updatedisplay(score, board,timer);

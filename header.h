@@ -1,8 +1,14 @@
 #pragma once
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
 #include <ctime>
 #include <easyx.h>
-#include <math.h>
+#include <fstream>
+#include <sstream>
 #include <string>
+#include <utility>
+#include <vector>
 
 const int row = 4;
 const int col = 4;
@@ -18,7 +24,7 @@ struct Player {
     int score;
     int step;
     int rank;
-    struct Player* next = NULL;
+    struct Player* next = nullptr;
 };
 
 struct GameTime {
@@ -47,6 +53,6 @@ void startTimer(GameTimer& timer);
 void pauseTimer(GameTimer& timer);
 void resumeTimer(GameTimer& timer);
 GameTime getGameTime(GameTimer& timer);
-void record(std::string name, int score, int step);
+void record(const std::string& name, int score, int step);
 Player* showrecord();
-Player* findrecord(std::string name);
+Player* findrecord(const std::string& name);

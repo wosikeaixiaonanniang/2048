@@ -1,8 +1,4 @@
 #include "header.h"
-#include <algorithm>
-#include <fstream>
-#include <sstream>
-#include <vector>
 
 using namespace std;
 
@@ -79,7 +75,7 @@ GameTime getGameTime(GameTimer& timer)
 }
 
 // 记录分数到文件
-void record(string name, int score, int step)
+void record(const string name, int score, int step)
 {
     const string filename = "game_records.txt";
     vector<Player> records;
@@ -162,7 +158,7 @@ Player* showrecord()
 }
 
 // 查找特定玩家的记录
-Player* findrecord(string name)
+Player* findrecord(const string name)
 {
     Player* allRecords = showrecord();
     Player* current = allRecords;

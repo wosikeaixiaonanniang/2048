@@ -3,13 +3,7 @@
 #include <iostream>
 
 using namespace std;
-struct player {
-    string name;
-    int score;
-    int step;
-    int rank;
-    struct player* next = NULL;
-};
+
 int main()
 {
 

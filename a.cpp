@@ -1,103 +1,99 @@
-#include "header.h"
-#include <cstdlib>
-#include <ctime>
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
-using namespace std::chrono;
+using namespace std;
 
-// 随机数初始化
-namespace {
-bool seeded = false;
-void initSeed()
+// 在随机空位生成新数字
+void newnumber(int board[4][4], int& score, int n)
 {
-    if (!seeded) {
-        srand(time(nullptr));
-        seeded = true;
-    }
-}
-}
-
-// 全局计时变量
-static steady_clock::time_point gameStartTime;
-
-// 开始游戏计时
-void startGameTimer()
-{
-    gameStartTime = steady_clock::now();
-}
-
-// 获取游戏时长
-GameTime getGameDuration()
-{
-    auto endTime = steady_clock::now();
-    auto duration = duration_cast<seconds>(endTime - gameStartTime);
-
-    long long totalSeconds = duration.count();
-    int hours = totalSeconds / 3600;
-    int minutes = (totalSeconds % 3600) / 60;
-    int seconds = totalSeconds % 60;
-
-    return { hours, minutes, seconds };
-}
-
-// 生成新数字
-void newnumber(int (&board)[4][4], int& score, int n)
-{
-    initSeed();
+    // 收集所有空位位置
     vector<pair<int, int>> emptyCells;
-
-    // 收集所有空位
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
             if (board[i][j] == 0) {
-                emptyCells.emplace_back(i, j);
+                emptyCells.push_back(make_pair(i, j));
             }
         }
     }
 
     if (emptyCells.empty())
-        return;
+        return; // 没有空位
 
-    // 随机选择空位
-    int idx = rand() % emptyCells.size();
-    auto& pos = emptyCells[idx];
+    // 随机选择一个空位
+    int index = rand() % emptyCells.size();
+    int x = emptyCells[index].first;
+    int y = emptyCells[index].second;
 
-    // 生成候选数字（2的倍数且<=n）
-    vector<int> candidates;
-    for (int num = 2; num <= n; num *= 2) {
-        candidates.push_back(num);
+    // 生成新数字 (2或4，90%概率为2，10%概率为4)
+    int newValue = (rand() % 10 < 9) ? 2 : 4;
+
+    // 确保新数字不超过n
+    while (newValue > n) {
+        newValue /= 2;
     }
 
-    if (candidates.empty())
-        candidates.push_back(2);
-
-    // 随机选择数字并放置
-    int numIdx = rand() % candidates.size();
-    int newNum = candidates[numIdx];
-    board[pos.first][pos.second] = newNum;
-
-    // 更新分数
-    score += newNum;
+    board[x][y] = newValue;
+    score += newValue; // 增加分数
 }
 
-// 记录处理
-void record(std::string name, int score, int step)
+// 计时功能实现
+void startTimer(GameTimer& timer)
 {
+    timer.startTime = clock();
+    timer.elapsedSeconds = 0;
+    timer.isPaused = false;
+}
+
+void pauseTimer(GameTimer& timer)
+{
+    if (!timer.isPaused) {
+        timer.pauseTime = clock();
+        timer.isPaused = true;
+        timer.elapsedSeconds += static_cast<int>((timer.pauseTime - timer.startTime) / CLOCKS_PER_SEC);
+    }
+}
+
+void resumeTimer(GameTimer& timer)
+{
+    if (timer.isPaused) {
+        timer.startTime = clock();
+        timer.isPaused = false;
+    }
+}
+
+GameTime getGameTime(GameTimer& timer)
+{
+    int totalSeconds = timer.elapsedSeconds;
+    if (!timer.isPaused) {
+        totalSeconds += static_cast<int>((clock() - timer.startTime) / CLOCKS_PER_SEC);
+    }
+
+    GameTime time;
+    time.hours = totalSeconds / 3600;
+    time.minutes = (totalSeconds % 3600) / 60;
+    time.seconds = totalSeconds % 60;
+    return time;
+}
+
+// 记录分数到文件
+void record(string name, int score, int step)
+{
+    const string filename = "game_records.txt";
     vector<Player> records;
 
     // 读取现有记录
-    ifstream fin("records.txt");
-    string line;
-    while (getline(fin, line)) {
-        stringstream ss(line);
-        string n;
-        int s, st;
-        if (ss >> n >> s >> st) {
-            records.push_back({ n, s, st, 0, nullptr });
+    ifstream inFile(filename);
+    if (inFile) {
+        Player p;
+        while (inFile >> p.name >> p.score >> p.step) {
+            records.push_back(p);
         }
+        inFile.close();
     }
-    fin.close();
 
-    // 更新记录
+    // 更新或添加记录
     bool found = false;
     for (auto& p : records) {
         if (p.name == name) {
@@ -109,79 +105,84 @@ void record(std::string name, int score, int step)
             break;
         }
     }
+
     if (!found) {
-        records.push_back({ name, score, step, 0, nullptr });
+        Player newPlayer;
+        newPlayer.name = name;
+        newPlayer.score = score;
+        newPlayer.step = step;
+        records.push_back(newPlayer);
     }
-
-    // 写入文件
-    ofstream fout("records.txt");
-    for (const auto& p : records) {
-        fout << p.name << " " << p.score << " " << p.step << "\n";
-    }
-    fout.close();
-}
-
-// 获取排行榜
-struct Player* showrecord()
-{
-    vector<Player> temp;
-
-    // 读取记录
-    ifstream fin("records.txt");
-    string line;
-    while (getline(fin, line)) {
-        stringstream ss(line);
-        string name;
-        int score, step;
-        if (ss >> name >> score >> step) {
-            temp.push_back({ name, score, step, 0, nullptr });
-        }
-    }
-    fin.close();
 
     // 按分数排序
-    sort(temp.begin(), temp.end(), [](const Player& a, const Player& b) {
+    sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
     });
 
-    // 构建链表
+    // 写回文件
+    ofstream outFile(filename);
+    for (const auto& p : records) {
+        outFile << p.name << " " << p.score << " " << p.step << "\n";
+    }
+    outFile.close();
+}
+
+// 显示所有记录
+Player* showrecord()
+{
+    const string filename = "game_records.txt";
     Player* head = nullptr;
     Player* tail = nullptr;
+
+    ifstream inFile(filename);
+    if (!inFile)
+        return nullptr;
+
+    // 读取记录并构建链表
+    Player p;
     int rank = 1;
-    for (const auto& t : temp) {
-        Player* node = new Player { t.name, t.score, t.step, rank++, nullptr };
-        if (!head) {
-            head = tail = node;
+    while (inFile >> p.name >> p.score >> p.step) {
+        p.rank = rank++;
+
+        Player* newNode = new Player;
+        *newNode = p;
+        newNode->next = nullptr;
+
+        if (head == nullptr) {
+            head = tail = newNode;
         } else {
-            tail->next = node;
-            tail = node;
+            tail->next = newNode;
+            tail = newNode;
         }
     }
+
+    inFile.close();
     return head;
 }
 
-// 查找玩家记录
-struct Player findrecord(std::string name)
+// 查找特定玩家的记录
+Player* findrecord(string name)
 {
-    Player* head = showrecord();
-    Player* curr = head;
-    Player result { "", -1, -1, -1, nullptr };
+    Player* allRecords = showrecord();
+    Player* current = allRecords;
+    Player* result = nullptr;
 
-    while (curr) {
-        if (curr->name == name) {
-            result = *curr;
-            result.next = nullptr; // 断开链表连接
+    while (current) {
+        if (current->name == name) {
+            result = new Player;
+            *result = *current;
+            result->next = nullptr;
             break;
         }
-        curr = curr->next;
+        current = current->next;
     }
 
-    // 释放内存
-    while (head) {
-        Player* temp = head;
-        head = head->next;
+    // 清理临时链表
+    while (allRecords) {
+        Player* temp = allRecords;
+        allRecords = allRecords->next;
         delete temp;
     }
 
-    return result;
+    return result; // 找不到时返回nullptr
 }

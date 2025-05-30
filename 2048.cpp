@@ -13,7 +13,8 @@ struct player
 };
 int main()
 {
-	playername = "guest";
+	playername = "name";
+	issignin = false;
 	initgraph(720, 900);
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();

@@ -1,28 +1,29 @@
 #pragma once
+#include <math.h>
+#include <string>
+#include <easyx.h>
+#include <time.h>
+#include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
-#include <cstdlib>
-#include <ctime>
 #include <easyx.h>
 #include <fstream>
-#include <iostream>
 #include <sstream>
-#include <string>
-#include <utility>
 #include <vector>
-
 using namespace std;
 
-const int row = 4; // 4è¡Œ
-const int col = 4; // 4åˆ—
-const int score = 0; // æ€»å¾—åˆ†
-#define DIR_UP 1
-#define DIR_DOWN 2
-#define DIR_LEFT 3
+const int row = 4;//4ĞĞ
+const int col = 4;//4ÁĞ
+const int score = 0;//×ÜµÃ·Ö
+#define DIR_UP    1
+#define DIR_DOWN  2
+#define DIR_LEFT  3
 #define DIR_RIGHT 4
-const int BOX_COUNT = 30; // æ¨ªæ¡†æ•°é‡
-static string playername; // æ¨ªæ¡†æ•°é‡
+const int BOX_COUNT = 10; // ºá¿òÊıÁ¿
+static string playername; // ºá¿òÊıÁ¿
+static bool issignin;
+
 
 struct Player {
     std::string name;
@@ -43,22 +44,28 @@ struct GameTimer {
     int elapsedSeconds;
     bool isPaused;
 };
-
+struct User 
+{
+    string name;
+    string password;
+};
 void numberadd(int board[4][4], int& score, int direction);
 void generateRandomTile(int board[4][4]);
 void thirdmenu();
 bool button(int x1, int y1, int x2, int y2, int msgx, int msgy);
-void gamemenu(int board[4][4], bool issignin);
+void gamemenu(int board[4][4],bool issignin);
 void givecolor(int num, int x, int y);
 void startbuttonshow(int y, const char str[], int a, int b, int c);
 void startmenu();
 void buttoncolor(int x1, int y1, int x2, int y2, int msgx, int msgy, const char str[]);
+void registerUser(string name, string password);
+bool checkUser(string name, string password);
 
 void newnumber(int board[4][4], int& score, int n);
 void startTimer(GameTimer& timer);
 void pauseTimer(GameTimer& timer);
 void resumeTimer(GameTimer& timer);
 GameTime getGameTime(GameTimer& timer);
-void record(const std::string& name, int score, int step);
+void record(std::string name, int score, int step);
 Player* showrecord();
-Player* findrecord(const std::string& name);
+Player* findrecord(std::string name);

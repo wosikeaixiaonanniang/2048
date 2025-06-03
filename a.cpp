@@ -6,7 +6,6 @@
 #include <vector>
 using namespace std;
 
-// 在随机空位生成新数字（非成员函数，无需修改）
 void newnumber(int board[4][4], int& score, int n)
 {
     vector<pair<int, int>> emptyCells;
@@ -155,7 +154,6 @@ Player* Player::findrecord(string name)
         current = current->next;
     }
 
-    // 清理临时链表
     while (allRecords) {
         Player* temp = allRecords;
         allRecords = allRecords->next;

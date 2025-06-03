@@ -23,7 +23,7 @@ using namespace std;
 //    if (emptyCells.empty())
 //        return;
 //    auto [x, y] = emptyCells[rand() % emptyCells.size()];
-//    int value = (rand() % 10 < 9) ? 2 : 4; // 90%¸ÅÂÊÉú³É2
+//    int value = (rand() % 10 < 9) ? 2 : 4; // 90%Â¸Ã…Ã‚ÃŠÃ‰ÃºÂ³Ã‰2
 //    board[x][y] = min(value, maxMultiple);
 //    score += value;
 //}

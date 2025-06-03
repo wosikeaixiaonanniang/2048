@@ -1,17 +1,14 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
-
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <vector>
-
 using namespace std;
 
-// 在随机空位生成新数字
+// 在随机空位生成新数字（非成员函数，无需修改）
 void newnumber(int board[4][4], int& score, int n)
 {
-    // 收集所有空位位置
     vector<pair<int, int>> emptyCells;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -20,59 +17,49 @@ void newnumber(int board[4][4], int& score, int n)
             }
         }
     }
-
     if (emptyCells.empty())
-        return; // 没有空位
-
-    // 随机选择一个空位
+        return;
     int index = rand() % emptyCells.size();
     int x = emptyCells[index].first;
     int y = emptyCells[index].second;
-
-    // 生成新数字 (2或4，90%概率为2，10%概率为4)
     int newValue = (rand() % 10 < 9) ? 2 : 4;
-
-    // 确保新数字不超过n
-    while (newValue > n) {
+    while (newValue > n)
         newValue /= 2;
-    }
-
     board[x][y] = newValue;
-    score += newValue; // 增加分数
+    score += newValue;
 }
 
-// 计时功能实现
-void startTimer(GameTimer& timer)
+// ============= GameTimer 类实现 =============
+void GameTimer::start()
 {
-    timer.startTime = clock();
-    timer.elapsedSeconds = 0;
-    timer.isPaused = false;
+    startTime = clock();
+    elapsedSeconds = 0;
+    isPaused = false;
 }
 
-void pauseTimer(GameTimer& timer)
+void GameTimer::pause()
 {
-    if (!timer.isPaused) {
-        timer.pauseTime = clock();
-        timer.isPaused = true;
-        timer.elapsedSeconds += static_cast<int>((timer.pauseTime - timer.startTime) / CLOCKS_PER_SEC);
+    if (!isPaused) {
+        pauseTime = clock();
+        isPaused = true;
+        elapsedSeconds += static_cast<int>((pauseTime - startTime) / CLOCKS_PER_SEC);
     }
 }
 
-void resumeTimer(GameTimer& timer)
+void GameTimer::resume()
 {
-    if (timer.isPaused) {
-        timer.startTime = clock();
-        timer.isPaused = false;
+    if (isPaused) {
+        startTime = clock();
+        isPaused = false;
     }
 }
 
-GameTime getGameTime(GameTimer& timer)
+GameTime GameTimer::getGameTime()
 {
-    int totalSeconds = timer.elapsedSeconds;
-    if (!timer.isPaused) {
-        totalSeconds += static_cast<int>((clock() - timer.startTime) / CLOCKS_PER_SEC);
+    int totalSeconds = elapsedSeconds;
+    if (!isPaused) {
+        totalSeconds += static_cast<int>((clock() - startTime) / CLOCKS_PER_SEC);
     }
-
     GameTime time;
     time.hours = totalSeconds / 3600;
     time.minutes = (totalSeconds % 3600) / 60;
@@ -80,13 +67,12 @@ GameTime getGameTime(GameTimer& timer)
     return time;
 }
 
-// 记录分数到文件
-void record(string name, int score, int step)
+// ============= Player 类静态方法实现 =============
+void Player::record(string name, int score, int step)
 {
     const string filename = "records.txt";
     vector<Player> records;
 
-    // 读取现有记录
     ifstream inFile(filename);
     if (inFile) {
         Player p;
@@ -96,7 +82,6 @@ void record(string name, int score, int step)
         inFile.close();
     }
 
-    // 更新或添加记录
     bool found = false;
     for (auto& p : records) {
         if (p.name == name) {
@@ -117,12 +102,10 @@ void record(string name, int score, int step)
         records.push_back(newPlayer);
     }
 
-    // 按分数排序
     sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
     });
 
-    // 写回文件
     ofstream outFile(filename);
     for (const auto& p : records) {
         outFile << p.name << " " << p.score << " " << p.step << "\n";
@@ -130,8 +113,7 @@ void record(string name, int score, int step)
     outFile.close();
 }
 
-// 显示所有记录
-Player* showrecord()
+Player* Player::showrecord()
 {
     const string filename = "records.txt";
     Player* head = nullptr;
@@ -141,30 +123,24 @@ Player* showrecord()
     if (!inFile)
         return nullptr;
 
-    // 读取记录并构建链表
     Player p;
     int rank = 1;
     while (inFile >> p.name >> p.score >> p.step) {
         p.rank = rank++;
-
-        Player* newNode = new Player;
-        *newNode = p;
+        Player* newNode = new Player(p); // 调用构造函数
         newNode->next = nullptr;
 
-        if (head == nullptr) {
-            head = tail = newNode;
-        } else {
+        if (!head)
+            head = newNode;
+        else
             tail->next = newNode;
-            tail = newNode;
-        }
+        tail = newNode;
     }
-
     inFile.close();
     return head;
 }
 
-// 查找特定玩家的记录
-Player* findrecord(string name)
+Player* Player::findrecord(string name)
 {
     Player* allRecords = showrecord();
     Player* current = allRecords;
@@ -172,8 +148,7 @@ Player* findrecord(string name)
 
     while (current) {
         if (current->name == name) {
-            result = new Player;
-            *result = *current;
+            result = new Player(*current); // 深拷贝
             result->next = nullptr;
             break;
         }
@@ -186,6 +161,5 @@ Player* findrecord(string name)
         allRecords = allRecords->next;
         delete temp;
     }
-
-    return result; // 找不到时返回nullptr
+    return result;
 }

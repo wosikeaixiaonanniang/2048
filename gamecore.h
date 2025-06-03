@@ -2,10 +2,10 @@
 class GameCore
 {
 protected:
-    int board[4][4] = { 0 }; // ÆåÅÌ×´Ì¬
-    int score = 0;         // µ±Ç°·ÖÊı
-    int step = 0;          // µ±Ç°²½Êı
-    bool moved = false;    // ÉÏ´Î²Ù×÷ÊÇ·ñÒÆ¶¯
+    int board[4][4] = { 0 }; // æ£‹ç›˜çŠ¶æ€
+    int score = 0;         // å½“å‰åˆ†æ•°
+    int step = 0;          // å½“å‰æ­¥æ•°
+    bool moved = false;    // ä¸Šæ¬¡æ“ä½œæ˜¯å¦ç§»åŠ¨
 public:
     void newnumber(int board[4][4], int& score, int n);
     void record(string name, int score, int step);

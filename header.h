@@ -12,15 +12,15 @@
 
 using namespace std;
 
-const int row = 4;//4ĞĞ
-const int col = 4;//4ÁĞ
-const int score = 0;//×ÜµÃ·Ö
+const int row = 4;//4è¡Œ
+const int col = 4;//4åˆ—
+const int score = 0;//æ€»å¾—åˆ†
 #define DIR_UP    1
 #define DIR_DOWN  2
 #define DIR_LEFT  3
 #define DIR_RIGHT 4
-const int BOX_COUNT = 10; // ºá¿òÊıÁ¿
-static string playername; // ºá¿òÊıÁ¿
+const int BOX_COUNT = 10; // æ¨ªæ¡†æ•°é‡
+static string playername; // æ¨ªæ¡†æ•°é‡
 static bool issignin;
 static bool usercheck;
 

@@ -8,10 +8,10 @@
 
 using namespace std;
 
-// ÔÚËæ»ú¿ÕÎ»Éú³ÉĞÂÊı×Ö
+// åœ¨éšæœºç©ºä½ç”Ÿæˆæ–°æ•°å­—
 void newnumber(int board[4][4], int& score, int n)
 {
-    // ÊÕ¼¯ËùÓĞ¿ÕÎ»Î»ÖÃ
+    // æ”¶é›†æ‰€æœ‰ç©ºä½ä½ç½®
     vector<pair<int, int>> emptyCells;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -22,26 +22,26 @@ void newnumber(int board[4][4], int& score, int n)
     }
 
     if (emptyCells.empty())
-        return; // Ã»ÓĞ¿ÕÎ»
+        return; // æ²¡æœ‰ç©ºä½
 
-    // Ëæ»úÑ¡ÔñÒ»¸ö¿ÕÎ»
+    // éšæœºé€‰æ‹©ä¸€ä¸ªç©ºä½
     int index = rand() % emptyCells.size();
     int x = emptyCells[index].first;
     int y = emptyCells[index].second;
 
-    // Éú³ÉĞÂÊı×Ö (2»ò4£¬90%¸ÅÂÊÎª2£¬10%¸ÅÂÊÎª4)
+    // ç”Ÿæˆæ–°æ•°å­— (2æˆ–4ï¼Œ90%æ¦‚ç‡ä¸º2ï¼Œ10%æ¦‚ç‡ä¸º4)
     int newValue = (rand() % 10 < 9) ? 2 : 4;
 
-    // È·±£ĞÂÊı×Ö²»³¬¹ın
+    // ç¡®ä¿æ–°æ•°å­—ä¸è¶…è¿‡n
     while (newValue > n) {
         newValue /= 2;
     }
 
     board[x][y] = newValue;
-    score += newValue; // Ôö¼Ó·ÖÊı
+    score += newValue; // å¢åŠ åˆ†æ•°
 }
 
-// ¼ÆÊ±¹¦ÄÜÊµÏÖ
+// è®¡æ—¶åŠŸèƒ½å®ç°
 void startTimer(GameTimer& timer)
 {
     timer.startTime = clock();
@@ -80,13 +80,13 @@ GameTime getGameTime(GameTimer& timer)
     return time;
 }
 
-// ¼ÇÂ¼·ÖÊıµ½ÎÄ¼ş
+// è®°å½•åˆ†æ•°åˆ°æ–‡ä»¶
 void record(string name, int score, int step)
 {
     const string filename = "game_records.txt";
     vector<Player> records;
 
-    // ¶ÁÈ¡ÏÖÓĞ¼ÇÂ¼
+    // è¯»å–ç°æœ‰è®°å½•
     ifstream inFile(filename);
     if (inFile) {
         Player p;
@@ -96,7 +96,7 @@ void record(string name, int score, int step)
         inFile.close();
     }
 
-    // ¸üĞÂ»òÌí¼Ó¼ÇÂ¼
+    // æ›´æ–°æˆ–æ·»åŠ è®°å½•
     bool found = false;
     for (auto& p : records) {
         if (p.name == name) {
@@ -117,12 +117,12 @@ void record(string name, int score, int step)
         records.push_back(newPlayer);
     }
 
-    // °´·ÖÊıÅÅĞò
+    // æŒ‰åˆ†æ•°æ’åº
     sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
         });
 
-    // Ğ´»ØÎÄ¼ş
+    // å†™å›æ–‡ä»¶
     ofstream outFile(filename);
     for (const auto& p : records) {
         outFile << p.name << " " << p.score << " " << p.step << "\n";
@@ -130,7 +130,7 @@ void record(string name, int score, int step)
     outFile.close();
 }
 
-// ÏÔÊ¾ËùÓĞ¼ÇÂ¼
+// æ˜¾ç¤ºæ‰€æœ‰è®°å½•
 Player* showrecord()
 {
     const string filename = "game_records.txt";
@@ -141,7 +141,7 @@ Player* showrecord()
     if (!inFile)
         return nullptr;
 
-    // ¶ÁÈ¡¼ÇÂ¼²¢¹¹½¨Á´±í
+    // è¯»å–è®°å½•å¹¶æ„å»ºé“¾è¡¨
     Player p;
     int rank = 1;
     while (inFile >> p.name >> p.score >> p.step) {
@@ -164,7 +164,7 @@ Player* showrecord()
     return head;
 }
 
-// ²éÕÒÌØ¶¨Íæ¼ÒµÄ¼ÇÂ¼
+// æŸ¥æ‰¾ç‰¹å®šç©å®¶çš„è®°å½•
 Player* findrecord(string name)
 {
     Player* allRecords = showrecord();
@@ -181,12 +181,12 @@ Player* findrecord(string name)
         current = current->next;
     }
 
-    // ÇåÀíÁÙÊ±Á´±í
+    // æ¸…ç†ä¸´æ—¶é“¾è¡¨
     while (allRecords) {
         Player* temp = allRecords;
         allRecords = allRecords->next;
         delete temp;
     }
 
-    return result; // ÕÒ²»µ½Ê±·µ»Ønullptr
+    return result; // æ‰¾ä¸åˆ°æ—¶è¿”å›nullptr
 }

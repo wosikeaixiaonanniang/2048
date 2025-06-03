@@ -83,7 +83,7 @@ GameTime getGameTime(GameTimer& timer)
 // 记录分数到文件
 void record(string name, int score, int step)
 {
-    const string filename = "game_records.txt";
+    const string filename = "records.txt";
     vector<Player> records;
 
     // 读取现有记录
@@ -120,7 +120,7 @@ void record(string name, int score, int step)
     // 按分数排序
     sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
-        });
+    });
 
     // 写回文件
     ofstream outFile(filename);
@@ -133,7 +133,7 @@ void record(string name, int score, int step)
 // 显示所有记录
 Player* showrecord()
 {
-    const string filename = "game_records.txt";
+    const string filename = "records.txt";
     Player* head = nullptr;
     Player* tail = nullptr;
 
@@ -153,8 +153,7 @@ Player* showrecord()
 
         if (head == nullptr) {
             head = tail = newNode;
-        }
-        else {
+        } else {
             tail->next = newNode;
             tail = newNode;
         }

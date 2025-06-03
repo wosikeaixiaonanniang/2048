@@ -3,26 +3,26 @@
 #include <string>
 #include <easyx.h>
 #include <time.h>
-#include <iostream>
 #include <algorithm>
 #include <chrono>
 #include <cmath>
-#include <easyx.h>
 #include <fstream>
 #include <sstream>
 #include <vector>
+
 using namespace std;
 
-const int row = 4;//4è¡Œ
-const int col = 4;//4åˆ—
-const int score = 0;//æ€»å¾—åˆ†
+const int row = 4;//4ĞĞ
+const int col = 4;//4ÁĞ
+const int score = 0;//×ÜµÃ·Ö
 #define DIR_UP    1
 #define DIR_DOWN  2
 #define DIR_LEFT  3
 #define DIR_RIGHT 4
-const int BOX_COUNT = 10; // æ¨ªæ¡†æ•°é‡
-static string playername; // æ¨ªæ¡†æ•°é‡
+const int BOX_COUNT = 10; // ºá¿òÊıÁ¿
+static string playername; // ºá¿òÊıÁ¿
 static bool issignin;
+static bool usercheck;
 
 
 struct Player {
@@ -50,7 +50,6 @@ struct User
     string password;
 };
 void numberadd(int board[4][4], int& score, int direction);
-void generateRandomTile(int board[4][4]);
 void thirdmenu();
 bool button(int x1, int y1, int x2, int y2, int msgx, int msgy);
 void gamemenu(int board[4][4],bool issignin);
@@ -60,6 +59,8 @@ void startmenu();
 void buttoncolor(int x1, int y1, int x2, int y2, int msgx, int msgy, const char str[]);
 void registerUser(string name, string password);
 bool checkUser(string name, string password);
+extern "C" void show_message_window(const char* message);
+void showerror(const char str[]);
 
 void newnumber(int board[4][4], int& score, int n);
 void startTimer(GameTimer& timer);

@@ -7,21 +7,24 @@ bool slideAndMerge(int line[4], int& score) {
     int temp[4] = { 0 };
     int index = 0;
 
+    // 1. ÒÆ¶¯ËùÓĞÊı×Öµ½×ó²à£¨È¥³ı0£©
     for (int i = 0; i < 4; i++) {
         if (line[i] != 0) {
             temp[index++] = line[i];
         }
     }
 
+    // 2. ºÏ²¢ÏàÁÚÏàÍ¬Êı×Ö
     for (int i = 0; i < 3; i++) {
         if (temp[i] != 0 && temp[i] == temp[i + 1]) {
             temp[i] *= 2;
-            score += temp[i]; // åŠ åˆ†
+            score += temp[i]; // ¼Ó·Ö
             temp[i + 1] = 0;
             moved = true;
         }
     }
 
+    // 3. ÔÙ´ÎÒÆ¶¯£¨´¦ÀíºÏ²¢ºó¿ÉÄÜ³öÏÖµÄ¿ÕÎ»£©
     index = 0;
     for (int i = 0; i < 4; i++) {
         line[i] = 0;
@@ -30,6 +33,7 @@ bool slideAndMerge(int line[4], int& score) {
         }
     }
 
+    // ¼ì²éÊÇ·ñ·¢ÉúÒÆ¶¯£¨ÓëÔ­Ê¼Êı¾İ±È½Ï£©
     for (int i = 0; i < 4; i++) {
         if (line[i] != temp[i]) {
             moved = true;
@@ -39,37 +43,52 @@ bool slideAndMerge(int line[4], int& score) {
     return moved;
 }
 
+// Ö÷Âß¼­º¯Êı
 void numberadd(int board[4][4], int& score, int direction) {
     bool moved = false;
     int temp[4];
 
     switch (direction) {
     case DIR_UP:
+        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÉÏµ½ÏÂ£©
         for (int j = 0; j < 4; j++) {
+            // ÌáÈ¡Ò»ÁĞ
             for (int i = 0; i < 4; i++) temp[i] = board[i][j];
+            // ´¦ÀíÕâÒ»ÁĞ
             if (slideAndMerge(temp, score)) moved = true;
+            // Ğ´»Ø
             for (int i = 0; i < 4; i++) board[i][j] = temp[i];
         }
         break;
 
     case DIR_DOWN:
+        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÏÂµ½ÉÏ£©
         for (int j = 0; j < 4; j++) {
+            // ÌáÈ¡Ò»ÁĞ£¨·´Ïò£©
             for (int i = 0; i < 4; i++) temp[3 - i] = board[i][j];
+            // ´¦ÀíÕâÒ»ÁĞ
             if (slideAndMerge(temp, score)) moved = true;
+            // Ğ´»Ø£¨·´Ïò£©
             for (int i = 0; i < 4; i++) board[i][j] = temp[3 - i];
         }
         break;
 
     case DIR_LEFT:
+        // ´¦ÀíÃ¿Ò»ĞĞ£¨´Ó×óµ½ÓÒ£©
         for (int i = 0; i < 4; i++) {
+            // Ö±½Ó´¦ÀíĞĞ
             if (slideAndMerge(board[i], score)) moved = true;
         }
         break;
 
     case DIR_RIGHT:
+        // ´¦ÀíÃ¿Ò»ĞĞ£¨´ÓÓÒµ½×ó£©
         for (int i = 0; i < 4; i++) {
+            // ÌáÈ¡Ò»ĞĞ£¨·´Ïò£©
             for (int j = 0; j < 4; j++) temp[3 - j] = board[i][j];
+            // ´¦ÀíÕâÒ»ĞĞ
             if (slideAndMerge(temp, score)) moved = true;
+            // Ğ´»Ø£¨·´Ïò£©
             for (int j = 0; j < 4; j++) board[i][j] = temp[3 - j];
         }
         break;
@@ -80,6 +99,7 @@ void registerUser(string name, string password)
     const string filename = "user.txt";
     vector<User> users;
 
+    // ¶ÁÈ¡ÏÖÓĞÓÃ»§
     ifstream inFile(filename);
     if (inFile) {
         User u;
@@ -89,31 +109,34 @@ void registerUser(string name, string password)
         inFile.close();
     }
 
-    // æ£€æŸ¥æ˜¯å¦é‡å
     bool userExists = false;
     for (const auto& u : users) {
         if (u.name == name) {
             userExists = true;
-            cout << "ç”¨æˆ·åå·²å­˜åœ¨ï¼Œè¯·é€‰æ‹©å…¶ä»–ç”¨æˆ·åï¼" << endl;
+            usercheck = true;
+            showerror("ÕË»§ÒÑ´æÔÚ");
+
             break;
         }
     }
 
-    // æ³¨å†Œæ–°ç”¨æˆ·
-    if (!userExists) {
+    // Èç¹ûÓÃ»§Ãû²»´æÔÚ£¬Ôò×¢²áĞÂÓÃ»§
+    if (!userExists) 
+    {
         User newUser;
         newUser.name = name;
         newUser.password = password;
         users.push_back(newUser);
 
-        // å†™å›æ–‡ä»¶
+        // Ğ´»ØÎÄ¼ş
         ofstream outFile(filename);
         for (const auto& u : users) {
             outFile << u.name << " " << u.password << "\n";
         }
         outFile.close();
+        showerror("×¢²á³É¹¦");
 
-        cout << "æ³¨å†ŒæˆåŠŸï¼" << endl;
+        //cout << "×¢²á³É¹¦£¡" << endl;
     }
 }
 bool checkUser(string name, string password) 
@@ -122,18 +145,24 @@ bool checkUser(string name, string password)
     ifstream inFile(filename);
 
     if (!inFile) {
-        cerr << "ç”¨æˆ·æ•°æ®åº“ä¸å­˜åœ¨æˆ–æ— æ³•æ‰“å¼€ï¼" << endl;
+       // cerr << "ÓÃ»§Êı¾İ¿â²»´æÔÚ»òÎŞ·¨´ò¿ª£¡" << endl;
         return false;
     }
 
     User currentUser;
-    while (inFile >> currentUser.name >> currentUser.password) {
+    while (inFile >> currentUser.name >> currentUser.password) 
+    {
         if (currentUser.name == name) {
-            inFile.close(); 
-            return (currentUser.password == password); // å¯†ç åŒ¹é…è¿”å› trueï¼Œå¦åˆ™ false
+            inFile.close(); // ¹Ø±ÕÎÄ¼şÁ÷
+            if(currentUser.password != password)
+                showerror("ÃÜÂë´íÎó");
+
+            return (currentUser.password == password); // ÃÜÂëÆ¥Åä·µ»Ø true£¬·ñÔò false
         }
     }
 
     inFile.close();
-    return false; 
+    showerror("ÕË»§²»´æÔÚ");
+
+    return false; // ÓÃ»§Ãû²»´æÔÚ
 }

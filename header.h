@@ -20,7 +20,7 @@ const int score = 0; // 总得分
 #define DIR_LEFT 3
 #define DIR_RIGHT 4
 const int BOX_COUNT = 10; // 横框数量
-static string playername; // 横框数量
+static string playername;
 static bool issignin;
 static bool usercheck;
 

@@ -6,14 +6,12 @@
 
 int main()
 {
-	playername = "name";
-	issignin = false;
-	usercheck = false;
+
 	GameUI ui;
 	FreeConsole();
 	initgraph(720, 900);
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();
-	ui.startmenu();
+	ui.showmenu();
 	return 0;
 }

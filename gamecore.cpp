@@ -9,24 +9,24 @@ bool GameCore::slideAndMerge(int line[4], int& score)
     int temp[4] = { 0 };
     int index = 0;
 
-    // 1. ç§»åŠ¨æ‰€æœ‰æ•°å­—åˆ°å·¦ä¾§ï¼ˆå»é™¤0ï¼‰
+    // 1. ÒÆ¶¯ËùÓĞÊı×Öµ½×ó²à£¨È¥³ı0£©
     for (int i = 0; i < 4; i++) {
         if (line[i] != 0) {
             temp[index++] = line[i];
         }
     }
 
-    // 2. åˆå¹¶ç›¸é‚»ç›¸åŒæ•°å­—
+    // 2. ºÏ²¢ÏàÁÚÏàÍ¬Êı×Ö
     for (int i = 0; i < 3; i++) {
         if (temp[i] != 0 && temp[i] == temp[i + 1]) {
             temp[i] *= 2;
-            score += temp[i]; // åŠ åˆ†
+            score += temp[i]; // ¼Ó·Ö
             temp[i + 1] = 0;
             moved = true;
         }
     }
 
-    // 3. å†æ¬¡ç§»åŠ¨ï¼ˆå¤„ç†åˆå¹¶åå¯èƒ½å‡ºç°çš„ç©ºä½ï¼‰
+    // 3. ÔÙ´ÎÒÆ¶¯£¨´¦ÀíºÏ²¢ºó¿ÉÄÜ³öÏÖµÄ¿ÕÎ»£©
     index = 0;
     for (int i = 0; i < 4; i++) {
         line[i] = 0;
@@ -35,7 +35,7 @@ bool GameCore::slideAndMerge(int line[4], int& score)
         }
     }
 
-    // æ£€æŸ¥æ˜¯å¦å‘ç”Ÿç§»åŠ¨ï¼ˆä¸åŸå§‹æ•°æ®æ¯”è¾ƒï¼‰
+    // ¼ì²éÊÇ·ñ·¢ÉúÒÆ¶¯£¨ÓëÔ­Ê¼Êı¾İ±È½Ï£©
     for (int i = 0; i < 4; i++) {
         if (line[i] != temp[i]) {
             moved = true;
@@ -45,7 +45,7 @@ bool GameCore::slideAndMerge(int line[4], int& score)
     return moved;
 }
 
-// ä¸»é€»è¾‘å‡½æ•°
+// Ö÷Âß¼­º¯Êı
 void GameCore::numberadd(int board[4][4], int& score, int direction)
 {
     bool moved = false;
@@ -53,45 +53,45 @@ void GameCore::numberadd(int board[4][4], int& score, int direction)
 
     switch (direction) {
     case DIR_UP:
-        // å¤„ç†æ¯ä¸€åˆ—ï¼ˆä»ä¸Šåˆ°ä¸‹ï¼‰
+        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÉÏµ½ÏÂ£©
         for (int j = 0; j < 4; j++) {
-            // æå–ä¸€åˆ—
+            // ÌáÈ¡Ò»ÁĞ
             for (int i = 0; i < 4; i++) temp[i] = board[i][j];
-            // å¤„ç†è¿™ä¸€åˆ—
+            // ´¦ÀíÕâÒ»ÁĞ
             if (slideAndMerge(temp, score)) moved = true;
-            // å†™å›
+            // Ğ´»Ø
             for (int i = 0; i < 4; i++) board[i][j] = temp[i];
         }
         break;
 
     case DIR_DOWN:
-        // å¤„ç†æ¯ä¸€åˆ—ï¼ˆä»ä¸‹åˆ°ä¸Šï¼‰
+        // ´¦ÀíÃ¿Ò»ÁĞ£¨´ÓÏÂµ½ÉÏ£©
         for (int j = 0; j < 4; j++) {
-            // æå–ä¸€åˆ—ï¼ˆåå‘ï¼‰
+            // ÌáÈ¡Ò»ÁĞ£¨·´Ïò£©
             for (int i = 0; i < 4; i++) temp[3 - i] = board[i][j];
-            // å¤„ç†è¿™ä¸€åˆ—
+            // ´¦ÀíÕâÒ»ÁĞ
             if (slideAndMerge(temp, score)) moved = true;
-            // å†™å›ï¼ˆåå‘ï¼‰
+            // Ğ´»Ø£¨·´Ïò£©
             for (int i = 0; i < 4; i++) board[i][j] = temp[3 - i];
         }
         break;
 
     case DIR_LEFT:
-        // å¤„ç†æ¯ä¸€è¡Œï¼ˆä»å·¦åˆ°å³ï¼‰
+        // ´¦ÀíÃ¿Ò»ĞĞ£¨´Ó×óµ½ÓÒ£©
         for (int i = 0; i < 4; i++) {
-            // ç›´æ¥å¤„ç†è¡Œ
+            // Ö±½Ó´¦ÀíĞĞ
             if (slideAndMerge(board[i], score)) moved = true;
         }
         break;
 
     case DIR_RIGHT:
-        // å¤„ç†æ¯ä¸€è¡Œï¼ˆä»å³åˆ°å·¦ï¼‰
+        // ´¦ÀíÃ¿Ò»ĞĞ£¨´ÓÓÒµ½×ó£©
         for (int i = 0; i < 4; i++) {
-            // æå–ä¸€è¡Œï¼ˆåå‘ï¼‰
+            // ÌáÈ¡Ò»ĞĞ£¨·´Ïò£©
             for (int j = 0; j < 4; j++) temp[3 - j] = board[i][j];
-            // å¤„ç†è¿™ä¸€è¡Œ
+            // ´¦ÀíÕâÒ»ĞĞ
             if (slideAndMerge(temp, score)) moved = true;
-            // å†™å›ï¼ˆåå‘ï¼‰
+            // Ğ´»Ø£¨·´Ïò£©
             for (int j = 0; j < 4; j++) board[i][j] = temp[3 - j];
         }
         break;
@@ -102,7 +102,7 @@ void GameUI::registerUser(string name, string password)
     const string filename = "user.txt";
     vector<User> users;
 
-    // è¯»å–ç°æœ‰ç”¨æˆ·
+    // ¶ÁÈ¡ÏÖÓĞÓÃ»§
     ifstream inFile(filename);
     if (inFile) {
         User u;
@@ -116,14 +116,13 @@ void GameUI::registerUser(string name, string password)
     for (const auto& u : users) {
         if (u.name == name) {
             userExists = true;
-            usercheck = true;
-            showerror("è´¦æˆ·å·²å­˜åœ¨");
+            showerror("ÕË»§ÒÑ´æÔÚ");
 
             break;
         }
     }
 
-    // å¦‚æœç”¨æˆ·åä¸å­˜åœ¨ï¼Œåˆ™æ³¨å†Œæ–°ç”¨æˆ·
+    // Èç¹ûÓÃ»§Ãû²»´æÔÚ£¬Ôò×¢²áĞÂÓÃ»§
     if (!userExists)
     {
         User newUser;
@@ -131,15 +130,15 @@ void GameUI::registerUser(string name, string password)
         newUser.password = password;
         users.push_back(newUser);
 
-        // å†™å›æ–‡ä»¶
+        // Ğ´»ØÎÄ¼ş
         ofstream outFile(filename);
         for (const auto& u : users) {
             outFile << u.name << " " << u.password << "\n";
         }
         outFile.close();
-        showerror("æ³¨å†ŒæˆåŠŸ");
+        showerror("×¢²á³É¹¦");
 
-        //cout << "æ³¨å†ŒæˆåŠŸï¼" << endl;
+        //cout << "×¢²á³É¹¦£¡" << endl;
     }
 }
 bool GameUI::checkUser(string name, string password)
@@ -148,7 +147,7 @@ bool GameUI::checkUser(string name, string password)
     ifstream inFile(filename);
 
     if (!inFile) {
-        // cerr << "ç”¨æˆ·æ•°æ®åº“ä¸å­˜åœ¨æˆ–æ— æ³•æ‰“å¼€ï¼" << endl;
+        // cerr << "ÓÃ»§Êı¾İ¿â²»´æÔÚ»òÎŞ·¨´ò¿ª£¡" << endl;
         return false;
     }
 
@@ -156,23 +155,23 @@ bool GameUI::checkUser(string name, string password)
     while (inFile >> currentUser.name >> currentUser.password)
     {
         if (currentUser.name == name) {
-            inFile.close(); // å…³é—­æ–‡ä»¶æµ
+            inFile.close(); // ¹Ø±ÕÎÄ¼şÁ÷
             if (currentUser.password != password)
-                showerror("å¯†ç é”™è¯¯");
+                showerror("ÃÜÂë´íÎó");
 
-            return (currentUser.password == password); // å¯†ç åŒ¹é…è¿”å› trueï¼Œå¦åˆ™ false
+            return (currentUser.password == password); // ÃÜÂëÆ¥Åä·µ»Ø true£¬·ñÔò false
         }
     }
 
     inFile.close();
-    showerror("è´¦æˆ·ä¸å­˜åœ¨");
+    showerror("ÕË»§²»´æÔÚ");
 
-    return false; // ç”¨æˆ·åä¸å­˜åœ¨
+    return false; // ÓÃ»§Ãû²»´æÔÚ
 }
 void GameCore::newnumber(int board[4][4], int& score, int n)
 
 {
-    // æ”¶é›†æ‰€æœ‰ç©ºä½ä½ç½®
+    // ÊÕ¼¯ËùÓĞ¿ÕÎ»Î»ÖÃ
     vector<pair<int, int>> emptyCells;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -183,26 +182,26 @@ void GameCore::newnumber(int board[4][4], int& score, int n)
     }
 
     if (emptyCells.empty())
-        return; // æ²¡æœ‰ç©ºä½
+        return; // Ã»ÓĞ¿ÕÎ»
 
-    // éšæœºé€‰æ‹©ä¸€ä¸ªç©ºä½
+    // Ëæ»úÑ¡ÔñÒ»¸ö¿ÕÎ»
     int index = rand() % emptyCells.size();
     int x = emptyCells[index].first;
     int y = emptyCells[index].second;
 
-    // ç”Ÿæˆæ–°æ•°å­— (2æˆ–4ï¼Œ90%æ¦‚ç‡ä¸º2ï¼Œ10%æ¦‚ç‡ä¸º4)
+    // Éú³ÉĞÂÊı×Ö (2»ò4£¬90%¸ÅÂÊÎª2£¬10%¸ÅÂÊÎª4)
     int newValue = (rand() % 10 < 9) ? 2 : 4;
 
-    // ç¡®ä¿æ–°æ•°å­—ä¸è¶…è¿‡n
+    // È·±£ĞÂÊı×Ö²»³¬¹ın
     while (newValue > n) {
         newValue /= 2;
     }
 
     board[x][y] = newValue;
-    score += newValue; // å¢åŠ åˆ†æ•°
+    score += newValue; // Ôö¼Ó·ÖÊı
 }
 
-// è®¡æ—¶åŠŸèƒ½å®ç°
+// ¼ÆÊ±¹¦ÄÜÊµÏÖ
 void Time::startTimer(GameTimer& timer)
 {
     timer.startTime = clock();
@@ -239,13 +238,13 @@ void Time::getGameTime(GameTimer& timer)
     this->seconds = totalSeconds % 60;
 }
 
-// è®°å½•åˆ†æ•°åˆ°æ–‡ä»¶
+// ¼ÇÂ¼·ÖÊıµ½ÎÄ¼ş
 void GameCore::record(string name, int score, int step)
 {
     const string filename = "game_records.txt";
     vector<Player> records;
 
-    // è¯»å–ç°æœ‰è®°å½•
+    // ¶ÁÈ¡ÏÖÓĞ¼ÇÂ¼
     ifstream inFile(filename);
     if (inFile) {
         Player p;
@@ -255,12 +254,12 @@ void GameCore::record(string name, int score, int step)
         inFile.close();
     }
 
-    // æ›´æ–°æˆ–æ·»åŠ è®°å½•
+    // ¸üĞÂ»òÌí¼Ó¼ÇÂ¼
     bool found = false;
     for (auto& p : records) {
         if (p.name == name) {
             found = true;
-            if (score > p.score) {
+            if (score > p.getscore()) {
                 p.score = score;
                 p.step = step;
             }
@@ -276,12 +275,12 @@ void GameCore::record(string name, int score, int step)
         records.push_back(newPlayer);
     }
 
-    // æŒ‰åˆ†æ•°æ’åº
+    // °´·ÖÊıÅÅĞò
     sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
         });
 
-    // å†™å›æ–‡ä»¶
+    // Ğ´»ØÎÄ¼ş
     ofstream outFile(filename);
     for (const auto& p : records) {
         outFile << p.name << " " << p.score << " " << p.step << "\n";
@@ -289,8 +288,8 @@ void GameCore::record(string name, int score, int step)
     outFile.close();
 }
 
-// æ˜¾ç¤ºæ‰€æœ‰è®°å½•
-Player* showrecord()
+// ÏÔÊ¾ËùÓĞ¼ÇÂ¼
+Player* GameCore::showrecord()
 {
     const string filename = "game_records.txt";
     Player* head = nullptr;
@@ -300,7 +299,7 @@ Player* showrecord()
     if (!inFile)
         return nullptr;
 
-    // è¯»å–è®°å½•å¹¶æ„å»ºé“¾è¡¨
+    // ¶ÁÈ¡¼ÇÂ¼²¢¹¹½¨Á´±í
     Player p;
     int rank = 1;
     while (inFile >> p.name >> p.score >> p.step) {
@@ -323,7 +322,7 @@ Player* showrecord()
     return head;
 }
 
-// æŸ¥æ‰¾ç‰¹å®šç©å®¶çš„è®°å½•
+// ²éÕÒÌØ¶¨Íæ¼ÒµÄ¼ÇÂ¼
 Player* GameCore::findrecord(string name)
 {
     Player* allRecords = showrecord();
@@ -340,12 +339,12 @@ Player* GameCore::findrecord(string name)
         current = current->next;
     }
 
-    // æ¸…ç†ä¸´æ—¶é“¾è¡¨
+    // ÇåÀíÁÙÊ±Á´±í
     while (allRecords) {
         Player* temp = allRecords;
         allRecords = allRecords->next;
         delete temp;
     }
 
-    return result; // æ‰¾ä¸åˆ°æ—¶è¿”å›nullptr
+    return result; // ÕÒ²»µ½Ê±·µ»Ønullptr
 }

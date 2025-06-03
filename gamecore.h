@@ -2,22 +2,22 @@
 class GameCore
 {
 protected:
-    int board[4][4] = { 0 }; // æ£‹ç›˜çŠ¶æ€
-    int score = 0;         // å½“å‰åˆ†æ•°
-    int step = 0;          // å½“å‰æ­¥æ•°
-    bool moved = false;    // ä¸Šæ¬¡æ“ä½œæ˜¯å¦ç§»åŠ¨
+    int board[4][4] = { 0 }; // ÆåÅÌ×´Ì¬
+    int score = 0;         // µ±Ç°·ÖÊı
+    int step = 0;          // µ±Ç°²½Êı
+    bool moved = false;    // ÉÏ´Î²Ù×÷ÊÇ·ñÒÆ¶¯
 public:
     void newnumber(int board[4][4], int& score, int n);
     void record(string name, int score, int step);
     Player* findrecord(string name);
-
     bool slideAndMerge(int line[4], int& score);
     void numberadd(int board[4][4], int& score, int direction);
+    Player* showrecord();
+
 };
 class GameTimer
 {
 public:
-
     clock_t startTime;
     clock_t pauseTime;
     int elapsedSeconds;
@@ -35,5 +35,4 @@ public:
     void pauseTimer(GameTimer& timer);
     void resumeTimer(GameTimer& timer);
     void getGameTime(GameTimer& timer);
-
 };

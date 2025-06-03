@@ -1,9 +1,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
-#include <algorithm>
-#include <fstream>
-#include <sstream>
-#include <vector>
+
 using namespace std;
 
 void newnumber(int board[4][4], int& score, int n)
@@ -28,7 +25,6 @@ void newnumber(int board[4][4], int& score, int n)
     score += newValue;
 }
 
-// ============= GameTimer 类实现 =============
 void GameTimer::start()
 {
     startTime = clock();
@@ -66,7 +62,6 @@ GameTime GameTimer::getGameTime()
     return time;
 }
 
-// ============= Player 类静态方法实现 =============
 void Player::record(string name, int score, int step)
 {
     const string filename = "records.txt";

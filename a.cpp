@@ -1,10 +1,19 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
+#include "ui.h"
+#include "gamecore.h"
+#include <algorithm>
+#include <fstream>
+#include <sstream>
+#include <vector>
 
 using namespace std;
 
-void newnumber(int board[4][4], int& score, int n)
+// ÔÚËæ»ú¿ÕÎ»Éú³ÉÐÂÊý×Ö
+void GameCore::newnumber(int board[4][4],int &score,int n)
+
 {
+    // ÊÕ¼¯ËùÓÐ¿ÕÎ»Î»ÖÃ
     vector<pair<int, int>> emptyCells;
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
@@ -13,60 +22,73 @@ void newnumber(int board[4][4], int& score, int n)
             }
         }
     }
+
     if (emptyCells.empty())
-        return;
+        return; // Ã»ÓÐ¿ÕÎ»
+
+    // Ëæ»úÑ¡ÔñÒ»¸ö¿ÕÎ»
     int index = rand() % emptyCells.size();
     int x = emptyCells[index].first;
     int y = emptyCells[index].second;
+
+    // Éú³ÉÐÂÊý×Ö (2»ò4£¬90%¸ÅÂÊÎª2£¬10%¸ÅÂÊÎª4)
     int newValue = (rand() % 10 < 9) ? 2 : 4;
-    while (newValue > n)
+
+    // È·±£ÐÂÊý×Ö²»³¬¹ýn
+    while (newValue > n) {
         newValue /= 2;
+    }
+
     board[x][y] = newValue;
-    score += newValue;
+    score += newValue; // Ôö¼Ó·ÖÊý
 }
 
-void GameTimer::start()
+// ¼ÆÊ±¹¦ÄÜÊµÏÖ
+void Time::startTimer(GameTimer& timer)
 {
-    startTime = clock();
-    elapsedSeconds = 0;
-    isPaused = false;
+    timer.startTime = clock();
+    timer.elapsedSeconds = 0;
+    timer.isPaused = false;
 }
 
-void GameTimer::pause()
+void Time::pauseTimer(GameTimer& timer)
 {
-    if (!isPaused) {
-        pauseTime = clock();
-        isPaused = true;
-        elapsedSeconds += static_cast<int>((pauseTime - startTime) / CLOCKS_PER_SEC);
+    if (!timer.isPaused) {
+        timer.pauseTime = clock();
+        timer.isPaused = true;
+        timer.elapsedSeconds += static_cast<int>((timer.pauseTime - timer.startTime) / CLOCKS_PER_SEC);
     }
 }
 
-void GameTimer::resume()
+void Time::resumeTimer(GameTimer& timer)
 {
-    if (isPaused) {
-        startTime = clock();
-        isPaused = false;
+    if (timer.isPaused) {
+        timer.startTime = clock();
+        timer.isPaused = false;
     }
 }
 
-GameTime GameTimer::getGameTime()
+Time Time::getGameTime(GameTimer& timer)
 {
-    int totalSeconds = elapsedSeconds;
-    if (!isPaused) {
-        totalSeconds += static_cast<int>((clock() - startTime) / CLOCKS_PER_SEC);
+    int totalSeconds = timer.elapsedSeconds;
+    if (!timer.isPaused) {
+        totalSeconds += static_cast<int>((clock() - timer.startTime) / CLOCKS_PER_SEC);
     }
-    GameTime time;
+
+    Time time;
     time.hours = totalSeconds / 3600;
     time.minutes = (totalSeconds % 3600) / 60;
     time.seconds = totalSeconds % 60;
     return time;
 }
 
-void Player::record(string name, int score, int step)
+// ¼ÇÂ¼·ÖÊýµ½ÎÄ¼þ
+void GameCore::record(string name, int score, int step)
 {
-    const string filename = "records.txt";
+    const string filename = "game_records.txt";
     vector<Player> records;
 
+    // ¶ÁÈ¡ÏÖÓÐ¼ÇÂ¼
     ifstream inFile(filename);
     if (inFile) {
         Player p;
@@ -76,6 +98,7 @@ void Player::record(string name, int score, int step)
         inFile.close();
     }
 
+    // ¸üÐÂ»òÌí¼Ó¼ÇÂ¼
     bool found = false;
     for (auto& p : records) {
         if (p.name == name) {
@@ -96,10 +119,12 @@ void Player::record(string name, int score, int step)
         records.push_back(newPlayer);
     }
 
+    // °´·ÖÊýÅÅÐò
     sort(records.begin(), records.end(), [](const Player& a, const Player& b) {
         return a.score > b.score;
-    });
+        });
 
+    // Ð´»ØÎÄ¼þ
     ofstream outFile(filename);
     for (const auto& p : records) {
         outFile << p.name << " " << p.score << " " << p.step << "\n";
@@ -107,9 +132,10 @@ void Player::record(string name, int score, int step)
     outFile.close();
 }
 
-Player* Player::showrecord()
+// ÏÔÊ¾ËùÓÐ¼ÇÂ¼
+Player* showrecord()
 {
-    const string filename = "records.txt";
+    const string filename = "game_records.txt";
     Player* head = nullptr;
     Player* tail = nullptr;
 
@@ -117,24 +143,31 @@ Player* Player::showrecord()
     if (!inFile)
         return nullptr;
 
+    // ¶ÁÈ¡¼ÇÂ¼²¢¹¹½¨Á´±í
     Player p;
     int rank = 1;
     while (inFile >> p.name >> p.score >> p.step) {
         p.rank = rank++;
-        Player* newNode = new Player(p); // è°ƒç”¨æž„é€ å‡½æ•°
+
+        Player* newNode = new Player;
+        *newNode = p;
         newNode->next = nullptr;
 
-        if (!head)
-            head = newNode;
-        else
+        if (head == nullptr) {
+            head = tail = newNode;
+        }
+        else {
             tail->next = newNode;
-        tail = newNode;
+            tail = newNode;
+        }
     }
+
     inFile.close();
     return head;
 }
 
-Player* Player::findrecord(string name)
+// ²éÕÒÌØ¶¨Íæ¼ÒµÄ¼ÇÂ¼
+Player* GameCore::findrecord(string name)
 {
     Player* allRecords = showrecord();
     Player* current = allRecords;
@@ -142,17 +175,20 @@ Player* Player::findrecord(string name)
 
     while (current) {
         if (current->name == name) {
-            result = new Player(*current); // æ·±æ‹·è´
+            result = new Player;
+            *result = *current;
             result->next = nullptr;
             break;
         }
         current = current->next;
     }
 
+    // ÇåÀíÁÙÊ±Á´±í
     while (allRecords) {
         Player* temp = allRecords;
         allRecords = allRecords->next;
         delete temp;
     }
-    return result;
+
+    return result; // ÕÒ²»µ½Ê±·µ»Ønullptr
 }

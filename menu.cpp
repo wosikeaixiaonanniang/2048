@@ -1,7 +1,9 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
+#include "ui.h"
+#include "gamecore.h"
 
-void showerror(const char str[])
+void GameUI::showerror(const char str[])
 {
 	int loginX = (720 - 500) / 2;
 	int loginY = (960 - 350) / 2;
@@ -9,54 +11,54 @@ void showerror(const char str[])
 	setfillcolor(RGB(255, 255, 255));
 	solidrectangle(loginX, loginY, loginX + 500, loginY + 350);
 
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(BLACK);
 	char title[50];
 	strcpy(title, str);
 
-	
+
 	ExMessage msg = { 0 };
 	bool running = true;
 	while (running)
 	{
 		BeginBatchDraw();
 		cleardevice();
-		settextstyle(200, 0, "å¾®è½¯é›…é»‘");
+		settextstyle(200, 0, "Î¢ÈíÑÅºÚ");
 		setbkmode(TRANSPARENT);
 		settextcolor(DARKGRAY);
-		//èƒŒæ™¯
+		//±³¾°
 		int hspace = (320 - textwidth("2048")) / 2;
 		int vspace = (200 - textheight("2048")) / 2;
 		outtextxy(200 + hspace, vspace, "2048");
-		startbuttonshow(230, "å¼€ å§‹ æ¸¸ æˆ", 189, 172, 162);
-		startbuttonshow(360, "æ¸¸ æˆ è§„ åˆ™", 189, 172, 162);
-		startbuttonshow(490, "æŒ‰ é”® è¯´ æ˜", 189, 172, 162);
-		startbuttonshow(620, "ç§¯ åˆ† æ’ å", 189, 172, 162);
-		startbuttonshow(750, "é€€ å‡º æ¸¸ æˆ", 189, 172, 162);
+		startbuttonshow(230, "¿ª Ê¼ ÓÎ Ï·", 189, 172, 162);
+		startbuttonshow(360, "ÓÎ Ï· ¹æ Ôò", 189, 172, 162);
+		startbuttonshow(490, "°´ ¼ü Ëµ Ã÷", 189, 172, 162);
+		startbuttonshow(620, "»ı ·Ö ÅÅ Ãû", 189, 172, 162);
+		startbuttonshow(750, "ÍË ³ö ÓÎ Ï·", 189, 172, 162);
 		setfillcolor(RGB(189 * 0.9, 172 * 0.9, 162 * 0.9));
 		solidrectangle(loginX, loginY, loginX + 500, loginY + 350);
 
-		settextstyle(80, 0, "å¾®è½¯é›…é»‘");
+		settextstyle(80, 0, "Î¢ÈíÑÅºÚ");
 		outtextxy(loginX + (500 - textwidth(title)) / 2, loginY + 70, title);
 
 		if (msg.x >= loginX + 50 && msg.x <= loginX + 50 + 220 + 180 && msg.y >= loginY + 250 && msg.y <= loginY + 310)
 		{
 			setfillcolor(RGB(125, 125, 125));
 			solidrectangle(loginX + 50, loginY + 250, loginX + 50 + 220 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (400 - textwidth("ç¡®è®¤")) / 2;
-			int vspace = (60 - textheight("ç¡®è®¤")) / 2;
-			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "ç¡®è®¤");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (400 - textwidth("È·ÈÏ")) / 2;
+			int vspace = (60 - textheight("È·ÈÏ")) / 2;
+			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "È·ÈÏ");
 		}
 		else
 		{
 			setfillcolor(RGB(189, 172, 162));
 			solidrectangle(loginX + 50, loginY + 250, loginX + 50 + 220 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (400 - textwidth("ç¡®è®¤")) / 2;
-			int vspace = (60 - textheight("ç¡®è®¤")) / 2;
-			outtextxy(loginX + 50  + hspace, loginY + 250 + vspace, "ç¡®è®¤");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (400 - textwidth("È·ÈÏ")) / 2;
+			int vspace = (60 - textheight("È·ÈÏ")) / 2;
+			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "È·ÈÏ");
 		}
 
 
@@ -74,43 +76,41 @@ void showerror(const char str[])
 					cleardevice();
 					break;
 				}
-			
+
 			}
 		}
 	}
 }
-
-void gameover(int score, int step,GameTimer timer)
+void GameUI::gameover(int score, int step, GameTimer timer)
 {
 	ExMessage msg = { 0 };
 
 	setfillcolor(RGB(189, 172, 162));
 	fillrectangle(150, 300, 720 - 150, 300 + 300);
-	settextstyle(30, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
 
 	char scoreStr[20];
 	sprintf(scoreStr, "%d", score);
 	int hspace = (100 - textwidth(scoreStr)) / 2;
 	int vspace = (50 - textheight(scoreStr)) / 2;
 	outtextxy(350 + hspace, 320 + vspace, scoreStr);
-	hspace = (100 - textwidth("æ‰€å¾—åˆ†æ•°")) / 2;
-	vspace = (50 - textheight("æ‰€å¾—åˆ†æ•°")) / 2;
-	outtextxy(225 + hspace, 320 + vspace, "æ‰€å¾—åˆ†æ•°");
+	hspace = (100 - textwidth("ËùµÃ·ÖÊı")) / 2;
+	vspace = (50 - textheight("ËùµÃ·ÖÊı")) / 2;
+	outtextxy(225 + hspace, 320 + vspace, "ËùµÃ·ÖÊı");
 
-	hspace = (100 - textwidth("æ‰€ç”¨æ­¥æ•°")) / 2;
-	vspace = (50 - textheight("æ‰€ç”¨æ­¥æ•°")) / 2;
-	outtextxy(225 + hspace, 370 + vspace, "æ‰€ç”¨æ­¥æ•°");
+	hspace = (100 - textwidth("ËùÓÃ²½Êı")) / 2;
+	vspace = (50 - textheight("ËùÓÃ²½Êı")) / 2;
+	outtextxy(225 + hspace, 370 + vspace, "ËùÓÃ²½Êı");
 	char stepStr[20];
 	sprintf(stepStr, "%d", step);
 	hspace = (100 - textwidth(stepStr)) / 2;
 	vspace = (50 - textheight(stepStr)) / 2;
 	outtextxy(350 + hspace, 370 + vspace, stepStr);
-	hspace = (100 - textwidth("æ‰€ç”¨æ—¶é—´")) / 2;
-	vspace = (50 - textheight("æ‰€ç”¨æ—¶é—´")) / 2;
-	outtextxy(225 + hspace, 420 + vspace, "æ‰€ç”¨æ—¶é—´");
-	GameTime time = getGameTime(timer);
+	hspace = (100 - textwidth("ËùÓÃÊ±¼ä")) / 2;
+	vspace = (50 - textheight("ËùÓÃÊ±¼ä")) / 2;
+	outtextxy(225 + hspace, 420 + vspace, "ËùÓÃÊ±¼ä");
 	char showtime[50];
-	sprintf(showtime, "%d:%d:%d", time.hours, time.minutes, time.seconds);
+	sprintf(showtime, "%d:%d:%d", this->hours, this->minutes, this->seconds);
 	hspace = (100 - textwidth(showtime)) / 2;
 	vspace = (50 - textheight(showtime)) / 2;
 	outtextxy(350 + hspace, 420 + vspace, showtime);
@@ -118,23 +118,23 @@ void gameover(int score, int step,GameTimer timer)
 	{
 		BeginBatchDraw();
 
-		if (msg.x >= 250 && msg.x <= 720-250 && msg.y >= 500 && msg.y <= 550)
+		if (msg.x >= 250 && msg.x <= 720 - 250 && msg.y >= 500 && msg.y <= 550)
 		{
 			setfillcolor(RGB(125, 125, 125));
 			solidrectangle(250, 500, 720 - 250, 500 + 50);
-			settextstyle(40, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (220 - textwidth("ç¡®  è®¤")) / 2;
-			int vspace = (50 - textheight("ç¡®  è®¤")) / 2;
-			outtextxy(250 + hspace, 500 + vspace, "ç¡®  è®¤");
+			settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (220 - textwidth("È·  ÈÏ")) / 2;
+			int vspace = (50 - textheight("È·  ÈÏ")) / 2;
+			outtextxy(250 + hspace, 500 + vspace, "È·  ÈÏ");
 		}
 		else
 		{
 			setfillcolor(RGB(209, 191, 182));
 			solidrectangle(250, 500, 720 - 250, 500 + 50);
-			settextstyle(40, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (220 - textwidth("ç¡®  è®¤")) / 2;
-			int vspace = (50 - textheight("ç¡®  è®¤")) / 2;
-			outtextxy(250 + hspace, 500 + vspace, "ç¡®  è®¤");
+			settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (220 - textwidth("È·  ÈÏ")) / 2;
+			int vspace = (50 - textheight("È·  ÈÏ")) / 2;
+			outtextxy(250 + hspace, 500 + vspace, "È·  ÈÏ");
 		}
 		EndBatchDraw();
 
@@ -143,7 +143,7 @@ void gameover(int score, int step,GameTimer timer)
 			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				if (button(250, 500, 250 + 220, 500 + 50, msg.x, msg.y))//ç¡®è®¤
+				if (button(250, 500, 250 + 220, 500 + 50, msg.x, msg.y))//È·ÈÏ
 				{
 					startmenu();
 				}
@@ -154,7 +154,7 @@ void gameover(int score, int step,GameTimer timer)
 		}
 	}
 }
-bool button(int x1, int y1, int x2, int y2, int msgx, int msgy)
+bool GameUI::button(int x1, int y1, int x2, int y2, int msgx, int msgy)
 {
 	if (msgx >= x1 && msgx <= x2 && msgy >= y1 && msgy <= y2)
 	{
@@ -165,7 +165,7 @@ bool button(int x1, int y1, int x2, int y2, int msgx, int msgy)
 
 
 }
-void buttoncolor(int x1, int y1, int x2, int y2, int msgx, int msgy,const char str[])
+void GameUI::buttoncolor(int x1, int y1, int x2, int y2, int msgx, int msgy, const char str[])
 {
 	if (msgx >= x1 && msgx <= x2 && msgy >= y1 && msgy <= y2)
 	{
@@ -176,7 +176,7 @@ void buttoncolor(int x1, int y1, int x2, int y2, int msgx, int msgy,const char s
 		startbuttonshow(y1, str, 189, 172, 162);
 	}
 }
-void givecolor(int num, int x, int y)
+void GameUI::givecolor(int num, int x, int y)
 {
 	x++;
 	y++;
@@ -186,11 +186,11 @@ void givecolor(int num, int x, int y)
 	char str[10];
 	if (num != 0)
 	{
-		sprintf(str, "%d", num);  // æ•°å­—è½¬å­—ç¬¦ä¸²
+		sprintf(str, "%d", num);  // Êı×Ö×ª×Ö·û´®
 	}
 	else
 	{
-		str[0] = '\0';  // 0 æ—¶ä¸æ˜¾ç¤ºæ–‡å­—
+		str[0] = '\0';  // 0 Ê±²»ÏÔÊ¾ÎÄ×Ö
 	}
 	switch (num)
 	{
@@ -262,7 +262,7 @@ void givecolor(int num, int x, int y)
 
 	if (num != 0)
 	{
-		settextstyle(size, 0, "å¾®è½¯é›…é»‘");
+		settextstyle(size, 0, "Î¢ÈíÑÅºÚ");
 		setbkmode(TRANSPARENT);
 		hspace = (100 - textwidth(str)) / 2;
 		vspace = (100 - textheight(str)) / 2;
@@ -272,29 +272,29 @@ void givecolor(int num, int x, int y)
 	}
 
 }
-void updatedisplay(int score, int board[4][4],GameTimer timer)
+void GameUI::updatedisplay(int score, int board[4][4], GameTimer timer)
 {
 	int bestscore = 0;
 	BeginBatchDraw();
-	//èƒŒæ™¯å’Œæ£‹ç›˜
+	//±³¾°ºÍÆåÅÌ
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();
 	setfillcolor(RGB(189, 172, 162));
 	solidroundrect(100, 320, 100 + 520, 320 + 520, 50, 50);
-	//2048æ–‡å­—
-	settextstyle(100, 0, "å¾®è½¯é›…é»‘");
+	//2048ÎÄ×Ö
+	settextstyle(100, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
 	int hspace = (250 - textwidth("2048")) / 2;
 	int vspace = (200 - textheight("2048")) / 2;
 	outtextxy(110 + hspace, 60 + vspace, "2048");
-	//ç§¯åˆ†æ 
+	//»ı·ÖÀ¸
 	setfillcolor(RGB(189, 172, 162));
 
 	solidroundrect(340, 100, 340 + 100, 100 + 100, 10, 10);
 	setfillcolor(RGB(189, 172, 162));
 	solidroundrect(450, 100, 450 + 100, 100 + 100, 10, 10);
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
 	hspace = (100 - textwidth("best")) / 2;
@@ -306,31 +306,30 @@ void updatedisplay(int score, int board[4][4],GameTimer timer)
 		sprintf(bestStr, "%d", you->score);
 	else
 		sprintf(bestStr, "%d", 0);
-	settextstyle(25, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(25, 0, "Î¢ÈíÑÅºÚ");
 
 	hspace = (100 - textwidth(bestStr)) / 2;
 	vspace = (50 - textheight(bestStr)) / 2;
 	outtextxy(450 + hspace, 150 + vspace, bestStr);
-	//æ—¶é—´
-	GameTime time = getGameTime(timer);
+	//Ê±¼ä
 	char showtime[50];
-	sprintf(showtime, "%d:%d:%d", time.hours, time.minutes, time.seconds);
+	sprintf(showtime, "%d:%d:%d", this->hours, this->minutes, this->seconds);
 	hspace = (100 - textwidth(showtime)) / 2;
 	vspace = (100 - textheight(showtime)) / 2;
-	settextstyle(30, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
 	outtextxy(325 + hspace, 200 + vspace, showtime);
-	//æ’¤é”€ æš‚åœ ç»“æŸ
+	//³·Ïú ÔİÍ£ ½áÊø
 
-	settextstyle(35, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(35, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
-	outtextxy(310, 280, "â†");
-	settextstyle(30, 0, "å¾®è½¯é›…é»‘");
+	outtextxy(310, 280, "¡û");
+	settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
 	settextcolor(DARKGRAY);
 	outtextxy(350, 280, "||");
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
-	outtextxy(380, 275, "Ã—");
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
+	outtextxy(380, 275, "¡Á");
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
 	hspace = (100 - textwidth("score")) / 2;
@@ -338,7 +337,7 @@ void updatedisplay(int score, int board[4][4],GameTimer timer)
 	outtextxy(340 + hspace, 100 + vspace, "score");
 	char scoreStr[20];
 	sprintf(scoreStr, "%d", score);
-	settextstyle(25, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(25, 0, "Î¢ÈíÑÅºÚ");
 
 	hspace = (100 - textwidth(scoreStr)) / 2;
 	vspace = (50 - textheight(scoreStr)) / 2;
@@ -352,32 +351,31 @@ void updatedisplay(int score, int board[4][4],GameTimer timer)
 	}
 	EndBatchDraw();
 }
-void gamemenu(int board[4][4],bool issignin)
+void GameUI::gamemenu(int board[4][4], bool issignin)
 {
 
 	ExMessage msg = { 0 };
-	//æ’¤å›
+	//³·»Ø
 	bool pause = false;
-	int backStack[3][4][4];  
-	int backScores[3];       
-	int backSteps[3];        
-	int backTop = -1;        // -1è¡¨ç¤ºç©º
+	int backStack[3][4][4];
+	int backScores[3];
+	int backSteps[3];
+	int backTop = -1;        // -1±íÊ¾¿Õ
 
-	//åˆ†æ•°ï¼Œæ­¥æ•°
+	//·ÖÊı£¬²½Êı
 	int score = 0;
 	int step = 0;
-	
-	//ç»™æ ¼å­ä¸Šè‰²å’Œæ•°å­—æ˜¾ç¤º
-	//ç”Ÿäº§2ä¸ªéšæœºæ•°
+
+	//¸ø¸ñ×ÓÉÏÉ«ºÍÊı×ÖÏÔÊ¾
+	//Éú²ú2¸öËæ»úÊı
 	newnumber(board, score, 4);
 	newnumber(board, score, 4);
-	GameTimer timer;
-	startTimer(timer);
-	updatedisplay(score, board,timer);
+	startTimer(Timer);
+	updatedisplay(score, board, Timer);
 	int checktime = 1000000;
 	int check = 1;
 
-	while (1)//æ¸¸æˆç•Œé¢ç”¨
+	while (1)//ÓÎÏ·½çÃæÓÃ
 	{
 		if (checktime)
 		{
@@ -385,10 +383,10 @@ void gamemenu(int board[4][4],bool issignin)
 		}
 		else
 		{
-			updatedisplay(score, board,timer);
+			updatedisplay(score, board, Timer);
 			checktime = 1000000;
 			check = 0;
-			for(int i = 0;i < 4;i++)
+			for (int i = 0;i < 4;i++)
 				for (int j = 0;j < 4;j++)
 				{
 					if (board[i][j] == 0)
@@ -400,14 +398,14 @@ void gamemenu(int board[4][4],bool issignin)
 			{
 				if (issignin)
 					record(playername, score, step);
-				gameover(score, step,timer);//ç»“æŸæ¸¸æˆ
+				gameover(score, step, Timer);//½áÊøÓÎÏ·
 			}
 		}
 		if (peekmessage(&msg, EX_KEY | EX_MOUSE))
 		{
 			if (msg.message == WM_KEYDOWN)
 			{
-				if(!pause)
+				if (!pause)
 				{
 					if (msg.vkcode == VK_UP || msg.vkcode == VK_DOWN || msg.vkcode == VK_LEFT || msg.vkcode == VK_RIGHT)
 					{
@@ -442,7 +440,7 @@ void gamemenu(int board[4][4],bool issignin)
 
 
 
-						updatedisplay(score, board,timer);
+						updatedisplay(score, board, Timer);
 
 						break;
 					case VK_DOWN:
@@ -451,7 +449,7 @@ void gamemenu(int board[4][4],bool issignin)
 						newnumber(board, score, 4);
 
 
-						updatedisplay(score, board, timer);
+						updatedisplay(score, board, Timer);
 
 
 						break;
@@ -461,7 +459,7 @@ void gamemenu(int board[4][4],bool issignin)
 						newnumber(board, score, 4);
 
 
-						updatedisplay(score, board, timer);
+						updatedisplay(score, board, Timer);
 
 
 						break;
@@ -471,7 +469,7 @@ void gamemenu(int board[4][4],bool issignin)
 						newnumber(board, score, 4);
 
 
-						updatedisplay(score, board, timer);
+						updatedisplay(score, board, Timer);
 
 
 						break;
@@ -485,40 +483,40 @@ void gamemenu(int board[4][4],bool issignin)
 			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				if (button(310, 280, 340, 310, msg.x, msg.y))//æ’¤å›
+				if (button(310, 280, 340, 310, msg.x, msg.y))//³·»Ø
 				{
-					if (backTop >= 0) // å¦‚æœæœ‰å†å²è®°å½•
+					if (backTop >= 0) // Èç¹ûÓĞÀúÊ·¼ÇÂ¼
 					{
 
-						// æ¢å¤æ£‹ç›˜
+						// »Ö¸´ÆåÅÌ
 						memcpy(board, backStack[backTop], sizeof(int) * 4 * 4);
 						score = backScores[backTop];
 						step = backSteps[backTop];
 
-						// æ›´æ–°æ˜¾ç¤º
-						updatedisplay(score, board,timer);
-						backTop--; // æ ˆé¡¶æŒ‡é’ˆå›é€€
+						// ¸üĞÂÏÔÊ¾
+						updatedisplay(score, board, Timer);
+						backTop--; // Õ»¶¥Ö¸Õë»ØÍË
 					}
 				}
-				if (button(340, 280, 370, 310, msg.x, msg.y))//æš‚åœ
+				if (button(340, 280, 370, 310, msg.x, msg.y))//ÔİÍ£
 				{
 					if (!pause)
 					{
-						pause = true;//æš‚åœ
-						pauseTimer(timer);
+						pause = true;//ÔİÍ£
+						pauseTimer(Timer);
 					}
 					else
 					{
-						pause = false;//ç»§ç»­
-						resumeTimer(timer);
+						pause = false;//¼ÌĞø
+						resumeTimer(Timer);
 					}
 
 				}
-				if (button(370, 280, 400, 310, msg.x, msg.y))//æ”¾å¼ƒ
+				if (button(370, 280, 400, 310, msg.x, msg.y))//·ÅÆú
 				{
 					if (issignin)
 						record("name", score, step);
-					gameover(score, step,timer);//ç»“æŸæ¸¸æˆ
+					gameover(score, step, Timer);//½áÊøÓÎÏ·
 				}
 				break;
 
@@ -528,57 +526,57 @@ void gamemenu(int board[4][4],bool issignin)
 			}
 		}
 
-		
 
-		
 
-		
-			
+
+
+
+
 
 	}
 }
-void startbuttonshow(int y, const char str[],int a,int b,int c)
+void GameUI::startbuttonshow(int y, const char str[], int a, int b, int c)
 {
 
 	setfillcolor(RGB(a, b, c));
 	solidrectangle(150, y, 150 + 420, y + 80);
-	settextstyle(60, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(60, 0, "Î¢ÈíÑÅºÚ");
 	int hspace = (420 - textwidth(str)) / 2;
 	int vspace = (80 - textheight(str)) / 2;
 	outtextxy(150 + hspace, y + vspace, str);
 
 }
-void ruleshow(int y, const char str[])
+void GameUI::ruleshow(int y, const char str[])
 {
 	setfillcolor(RGB(189, 172, 162));
 	solidrectangle(50, y, 50 + 620, y + 80);
-	settextstyle(30, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
 	int hspace = (520 - textwidth(str)) / 2;
 	int vspace = (80 - textheight(str)) / 2;
 	outtextxy(100 + hspace, y + vspace, str);
 }
-void secondmenu()
+void GameUI::secondmenu()
 {
 	ExMessage msg = { 0 };
 
 	cleardevice();
 
-	ruleshow(100, "ç›®æ ‡ï¼šé€šè¿‡åˆå¹¶ç›¸åŒæ•°å­—çš„æ–¹å—ï¼Œæœ€ç»ˆå¾—åˆ°ä¸€ä¸ª2048çš„æ–¹å—ã€‚");
+	ruleshow(100, "Ä¿±ê£ºÍ¨¹ıºÏ²¢ÏàÍ¬Êı×ÖµÄ·½¿é£¬×îÖÕµÃµ½Ò»¸ö2048µÄ·½¿é¡£");
 
-	ruleshow(200, "ç§»åŠ¨è§„åˆ™ï¼šç©å®¶å¯ä»¥é€šè¿‡ä¸Šä¸‹å·¦å³å››ä¸ªæ–¹å‘æ»‘åŠ¨");
-	ruleshow(260, "æ‰€æœ‰æ•°å­—æ–¹å—ä¼šå‘æ»‘åŠ¨çš„æ–¹å‘é æ‹¢");
+	ruleshow(200, "ÒÆ¶¯¹æÔò£ºÍæ¼Ò¿ÉÒÔÍ¨¹ıÉÏÏÂ×óÓÒËÄ¸ö·½Ïò»¬¶¯");
+	ruleshow(260, "ËùÓĞÊı×Ö·½¿é»áÏò»¬¶¯µÄ·½Ïò¿¿Â£");
 
-	ruleshow(360, "åˆå¹¶è§„åˆ™ï¼šç›¸åŒæ•°å­—çš„æ–¹å—åœ¨é æ‹¢æ—¶ä¼šç›¸åŠ ");
-	ruleshow(420, "å¹¶ä¸”å½¢æˆä¸€ä¸ªæ–°çš„æ–¹å—ã€‚");
+	ruleshow(360, "ºÏ²¢¹æÔò£ºÏàÍ¬Êı×ÖµÄ·½¿éÔÚ¿¿Â£Ê±»áÏà¼Ó");
+	ruleshow(420, "²¢ÇÒĞÎ³ÉÒ»¸öĞÂµÄ·½¿é¡£");
 
 
-	ruleshow(520, "ç”Ÿæˆè§„åˆ™ï¼šæ¯æ¬¡æ»‘åŠ¨åï¼Œç©ºç™½å¤„ä¼šéšæœºç”Ÿæˆä¸€ä¸ª2æˆ–4çš„æ–¹å—ã€‚");
-	ruleshow(620, "å¤±è´¥æ¡ä»¶ï¼šå¦‚æœæ‰€æœ‰æ ¼å­éƒ½å¡«æ»¡ä¸”æ²¡æœ‰ç›¸é‚»çš„ç›¸åŒæ•°å­—æ–¹å—ã€‚");
+	ruleshow(520, "Éú³É¹æÔò£ºÃ¿´Î»¬¶¯ºó£¬¿Õ°×´¦»áËæ»úÉú³ÉÒ»¸ö2»ò4µÄ·½¿é¡£");
+	ruleshow(620, "Ê§°ÜÌõ¼ş£ºÈç¹ûËùÓĞ¸ñ×Ó¶¼ÌîÂúÇÒÃ»ÓĞÏàÁÚµÄÏàÍ¬Êı×Ö·½¿é¡£");
 	while (1)
 	{
 		BeginBatchDraw();
 
-		buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "ç¡®  è®¤");
+		buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "È·  ÈÏ");
 		EndBatchDraw();
 
 		if (peekmessage(&msg, EX_MOUSE))
@@ -586,7 +584,7 @@ void secondmenu()
 			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//ç¡®è®¤
+				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//È·ÈÏ
 				{
 					cleardevice();
 
@@ -600,58 +598,58 @@ void secondmenu()
 	}
 
 }
-void thirdmenu()
+void GameUI::thirdmenu()
 {
 	ExMessage msg = { 0 };
 
-	//å·¦ä¾§ç¬¦å·
-	settextstyle(50, 0, "å¾®è½¯é›…é»‘");
+	//×ó²à·ûºÅ
+	settextstyle(50, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
 	setfillcolor(RGB(189, 172, 162));
 	solidrectangle(150, 50, 150 + 150, 50 + 150);
-	outtextxy(215, 50, "â†‘");
-	outtextxy(215, 150, "â†“");
-	outtextxy(160, 100, "â†");
-	outtextxy(250, 100, "â†’");
+	outtextxy(215, 50, "¡ü");
+	outtextxy(215, 150, "¡ı");
+	outtextxy(160, 100, "¡û");
+	outtextxy(250, 100, "¡ú");
 	solidrectangle(150, 220, 150 + 150, 220 + 150);
-	int hspace = (150 - textwidth("â†")) / 2;
-	int vspace = (150 - textheight("â†")) / 2;
-	settextstyle(100, 0, "å¾®è½¯é›…é»‘");
-	outtextxy(130 + hspace, 200 + vspace, "â†");
+	int hspace = (150 - textwidth("¡û")) / 2;
+	int vspace = (150 - textheight("¡û")) / 2;
+	settextstyle(100, 0, "Î¢ÈíÑÅºÚ");
+	outtextxy(130 + hspace, 200 + vspace, "¡û");
 	solidrectangle(150, 390, 150 + 150, 390 + 150);
 	hspace = (150 - textwidth("||")) / 2;
 	vspace = (150 - textheight("||")) / 2;
 	outtextxy(150 + hspace, 390 + vspace, "||");
 	solidrectangle(150, 560, 150 + 150, 560 + 150);
-	hspace = (150 - textwidth("Ã—")) / 2;
-	vspace = (150 - textheight("Ã—")) / 2;
-	outtextxy(150 + hspace, 560 + vspace, "Ã—");
-	//å³ä¾§æ–‡å­—
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+	hspace = (150 - textwidth("¡Á")) / 2;
+	vspace = (150 - textheight("¡Á")) / 2;
+	outtextxy(150 + hspace, 560 + vspace, "¡Á");
+	//ÓÒ²àÎÄ×Ö
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 
 	solidrectangle(350, 100, 350 + 250, 100 + 50);
-	hspace = (250 - textwidth("æŒ‰é”®ç›˜ä»¥ç§»åŠ¨æ–¹å—")) / 2;
-	vspace = (50 - textheight("æŒ‰é”®ç›˜ä»¥ç§»åŠ¨æ–¹å—")) / 2;
-	outtextxy(350 + hspace, 100 + vspace, "æŒ‰é”®ç›˜ä»¥ç§»åŠ¨æ–¹å—");
+	hspace = (250 - textwidth("°´¼üÅÌÒÔÒÆ¶¯·½¿é")) / 2;
+	vspace = (50 - textheight("°´¼üÅÌÒÔÒÆ¶¯·½¿é")) / 2;
+	outtextxy(350 + hspace, 100 + vspace, "°´¼üÅÌÒÔÒÆ¶¯·½¿é");
 	solidrectangle(350, 270, 350 + 250, 270 + 50);
-	hspace = (250 - textwidth("æ’¤å›ä¸€æ­¥")) / 2;
-	vspace = (50 - textheight("æ’¤å›ä¸€æ­¥")) / 2;
-	outtextxy(350 + hspace, 270 + vspace, "æ’¤å›ä¸€æ­¥");
+	hspace = (250 - textwidth("³·»ØÒ»²½")) / 2;
+	vspace = (50 - textheight("³·»ØÒ»²½")) / 2;
+	outtextxy(350 + hspace, 270 + vspace, "³·»ØÒ»²½");
 	solidrectangle(350, 440, 350 + 250, 440 + 50);
-	hspace = (250 - textwidth("æš‚åœè®¡æ—¶")) / 2;
-	vspace = (50 - textheight("æš‚åœè®¡æ—¶")) / 2;
-	outtextxy(350 + hspace, 440 + vspace, "æš‚åœè®¡æ—¶");
+	hspace = (250 - textwidth("ÔİÍ£¼ÆÊ±")) / 2;
+	vspace = (50 - textheight("ÔİÍ£¼ÆÊ±")) / 2;
+	outtextxy(350 + hspace, 440 + vspace, "ÔİÍ£¼ÆÊ±");
 	solidrectangle(350, 610, 350 + 250, 610 + 50);
-	hspace = (250 - textwidth("æ”¾å¼ƒæ¸¸æˆ")) / 2;
-	vspace = (50 - textheight("æ”¾å¼ƒæ¸¸æˆ")) / 2;
-	outtextxy(350 + hspace, 610 + vspace, "æ”¾å¼ƒæ¸¸æˆ");
-	//è¿”å›
+	hspace = (250 - textwidth("·ÅÆúÓÎÏ·")) / 2;
+	vspace = (50 - textheight("·ÅÆúÓÎÏ·")) / 2;
+	outtextxy(350 + hspace, 610 + vspace, "·ÅÆúÓÎÏ·");
+	//·µ»Ø
 
 	while (1)
 	{
 		BeginBatchDraw();
-		buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "ç¡®  è®¤");
+		buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "È·  ÈÏ");
 		EndBatchDraw();
 
 		if (peekmessage(&msg, EX_MOUSE))
@@ -659,7 +657,7 @@ void thirdmenu()
 			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//ç¡®è®¤
+				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//È·ÈÏ
 				{
 					cleardevice();
 
@@ -673,18 +671,18 @@ void thirdmenu()
 	}
 
 }
-void drawBoxes(int offsetY,string name,bool issignin) 
+void GameUI::drawBoxes(int offsetY, string name, bool issignin)
 {
 	Player* head = showrecord();
-	Player *you = findrecord(name);
+	Player* you = findrecord(name);
 	bool end = false;
-	settextstyle(200, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(200, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(DARKGRAY);
 	int hspace = (720 - textwidth("2048")) / 2;
 	outtextxy(hspace, offsetY, "2048");
 	setfillcolor(RGB(189, 172, 162));
-	settextstyle(30, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(BLACK);
 	solidrectangle((720 - 600) / 2, 200 + offsetY, (720 - 600) / 2 + 600, 200 + offsetY + 60);
@@ -693,14 +691,14 @@ void drawBoxes(int offsetY,string name,bool issignin)
 	if (issignin)
 	{
 		if (you != NULL)
-			sprintf(yourtext, "æ‚¨çš„æœ€ä½³åˆ†æ•°ä¸º:%d    ä½¿ç”¨æ­¥æ•°:%d    æ’åä¸º:%d", you->score, you->step, you->rank);//æ–‡å­—å†…å®¹
+			sprintf(yourtext, "ÄúµÄ×î¼Ñ·ÖÊıÎª:%d    Ê¹ÓÃ²½Êı:%d    ÅÅÃûÎª:%d", you->score, you->step, you->rank);//ÎÄ×ÖÄÚÈİ
 
 		else
-			sprintf(yourtext, "æ‚¨çš„æœ€ä½³åˆ†æ•°ä¸º:%d    ä½¿ç”¨æ­¥æ•°:%d    æ’åä¸º:%d", 0, 0, 0);//æ–‡å­—å†…å®¹
+			sprintf(yourtext, "ÄúµÄ×î¼Ñ·ÖÊıÎª:%d    Ê¹ÓÃ²½Êı:%d    ÅÅÃûÎª:%d", 0, 0, 0);//ÎÄ×ÖÄÚÈİ
 	}
 	else
 	{
-		strcpy(yourtext, "è¯·å…ˆç™»å½•");
+		strcpy(yourtext, "ÇëÏÈµÇÂ¼");
 	}
 	int textWidth = textwidth(yourtext);
 	int textHeight = textheight(yourtext);
@@ -708,13 +706,13 @@ void drawBoxes(int offsetY,string name,bool issignin)
 	int startY = 150 + 200 + offsetY;
 	if (head == NULL)
 		end = true;
-	for (int i = 0; i < BOX_COUNT; i++) 
+	for (int i = 0; i < BOX_COUNT; i++)
 	{
 		solidrectangle((720 - 600) / 2, startY + i * 70, (720 - 600) / 2 + 600, startY + i * 70 + 60);
 		char text[300];
 		if (!end)
 		{
-			sprintf(text, "%sçš„åˆ†æ•°ä¸º:%d    ä½¿ç”¨æ­¥æ•°:%d    æ’åä¸º:%d", head->name.c_str(), head->score, head->step, head->rank);
+			sprintf(text, "%sµÄ·ÖÊıÎª:%d    Ê¹ÓÃ²½Êı:%d    ÅÅÃûÎª:%d", head->name.c_str(), head->score, head->step, head->rank);
 			int textWidth = textwidth(text);
 			int textHeight = textheight(text);
 			outtextxy((720 - textWidth) / 2, startY + i * 70 + (60 - textHeight) / 2, text);
@@ -730,11 +728,10 @@ void drawBoxes(int offsetY,string name,bool issignin)
 				head = head->next;
 			}
 		}
-		
+
 	}
 }
-
-void signin() 
+void GameUI::signin()
 {
 	int loginX = (720 - 500) / 2;
 	int loginY = (960 - 350) / 2;
@@ -742,10 +739,10 @@ void signin()
 	setfillcolor(RGB(255, 255, 255));
 	solidrectangle(loginX, loginY, loginX + 500, loginY + 350);
 
-	settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+	settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 	setbkmode(TRANSPARENT);
 	settextcolor(BLACK);
-	const char* title = "ç”¨æˆ·ç™»å½•";
+	const char* title = "ÓÃ»§µÇÂ¼";
 	outtextxy(loginX + (500 - textwidth(title)) / 2, loginY + 30, title);
 
 	string nametext;
@@ -755,31 +752,31 @@ void signin()
 
 	ExMessage msg = { 0 };
 	bool running = true;
-	while (running) 
+	while (running)
 	{
 		BeginBatchDraw();
 		cleardevice();
-		settextstyle(200, 0, "å¾®è½¯é›…é»‘");
+		settextstyle(200, 0, "Î¢ÈíÑÅºÚ");
 		setbkmode(TRANSPARENT);
 		settextcolor(DARKGRAY);
-		//èƒŒæ™¯
+		//±³¾°
 		int hspace = (320 - textwidth("2048")) / 2;
 		int vspace = (200 - textheight("2048")) / 2;
 		outtextxy(200 + hspace, vspace, "2048");
-		startbuttonshow(230, "å¼€ å§‹ æ¸¸ æˆ", 189, 172, 162);
-		startbuttonshow(360, "æ¸¸ æˆ è§„ åˆ™", 189, 172, 162);
-		startbuttonshow(490, "æŒ‰ é”® è¯´ æ˜", 189, 172, 162);
-		startbuttonshow(620, "ç§¯ åˆ† æ’ å", 189, 172, 162);
-		startbuttonshow(750, "é€€ å‡º æ¸¸ æˆ", 189, 172, 162);
+		startbuttonshow(230, "¿ª Ê¼ ÓÎ Ï·", 189, 172, 162);
+		startbuttonshow(360, "ÓÎ Ï· ¹æ Ôò", 189, 172, 162);
+		startbuttonshow(490, "°´ ¼ü Ëµ Ã÷", 189, 172, 162);
+		startbuttonshow(620, "»ı ·Ö ÅÅ Ãû", 189, 172, 162);
+		startbuttonshow(750, "ÍË ³ö ÓÎ Ï·", 189, 172, 162);
 		setfillcolor(RGB(189 * 0.9, 172 * 0.9, 162 * 0.9));
 		solidrectangle(loginX, loginY, loginX + 500, loginY + 350);
 
-		settextstyle(40, 0, "å¾®è½¯é›…é»‘");
+		settextstyle(40, 0, "Î¢ÈíÑÅºÚ");
 		outtextxy(loginX + (500 - textwidth(title)) / 2, loginY + 30, title);
 
-		settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-		outtextxy(loginX + 50, loginY + 70, "è´¦å·:");
-		outtextxy(loginX + 50, loginY + 150, "å¯†ç :");
+		settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+		outtextxy(loginX + 50, loginY + 70, "ÕËºÅ:");
+		outtextxy(loginX + 50, loginY + 150, "ÃÜÂë:");
 
 		setfillcolor(RGB(240, 240, 240));
 		solidrectangle(loginX + 50, loginY + 100, loginX + 50 + 500 - 100, loginY + 100 + 50);
@@ -788,85 +785,85 @@ void signin()
 		setfillcolor(RGB(240, 240, 240));
 		solidrectangle(loginX + 50, loginY + 180, loginX + 50 + 500 - 100, loginY + 180 + 50);
 		rectangle(loginX + 50, loginY + 180, loginX + 50 + 500 - 100, loginY + 180 + 50);
-		//æ˜¾ç¤º
+		//ÏÔÊ¾
 
 		settextcolor(BLACK);
 		if (!nametext.empty()) {
-				outtextxy(loginX + 50 + 10, loginY + 100 + (50 - textheight("A")) / 2, nametext.c_str());
+			outtextxy(loginX + 50 + 10, loginY + 100 + (50 - textheight("A")) / 2, nametext.c_str());
 		}
 
-		if (!passtext.empty()) 
+		if (!passtext.empty())
 		{
 			string stars(passtext.size(), '*');
 			outtextxy(loginX + 50 + 10, loginY + 180 + (50 - textheight("A")) / 2, stars.c_str());
 		}
 
-		if (msg.x >= loginX+50 && msg.x <= loginX+ 50 + 180 && msg.y >= loginY+250 && msg.y <= loginY + 310)
+		if (msg.x >= loginX + 50 && msg.x <= loginX + 50 + 180 && msg.y >= loginY + 250 && msg.y <= loginY + 310)
 		{
 			setfillcolor(RGB(125, 125, 125));
 			solidrectangle(loginX + 50, loginY + 250, loginX + 50 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (180  - textwidth("ç™»å½•")) / 2;
-			int vspace = (60 - textheight("ç™»å½•")) / 2;
-			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "ç™»å½•");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (180 - textwidth("µÇÂ¼")) / 2;
+			int vspace = (60 - textheight("µÇÂ¼")) / 2;
+			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "µÇÂ¼");
 		}
 		else
 		{
 			setfillcolor(RGB(189, 172, 162));
 			solidrectangle(loginX + 50, loginY + 250, loginX + 50 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (180 - textwidth("ç™»å½•")) / 2;
-			int vspace = (60 - textheight("ç™»å½•")) / 2;
-			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "ç™»å½•");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (180 - textwidth("µÇÂ¼")) / 2;
+			int vspace = (60 - textheight("µÇÂ¼")) / 2;
+			outtextxy(loginX + 50 + hspace, loginY + 250 + vspace, "µÇÂ¼");
 		}
 
-		if (msg.x >= loginX + 50 + 220 && msg.x <= loginX  +50 + 220 + 180 && msg.y >= loginY + 250 && msg.y <= loginY + 310)
+		if (msg.x >= loginX + 50 + 220 && msg.x <= loginX + 50 + 220 + 180 && msg.y >= loginY + 250 && msg.y <= loginY + 310)
 		{
 			setfillcolor(RGB(125, 125, 125));
 			solidrectangle(loginX + 50 + 220, loginY + 250, loginX + 50 + 220 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (180 - textwidth("æ³¨å†Œ")) / 2;
-			int vspace = (60 - textheight("æ³¨å†Œ")) / 2;
-			outtextxy(loginX + 50 + 220 + hspace, loginY + 250 + vspace, "æ³¨å†Œ");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (180 - textwidth("×¢²á")) / 2;
+			int vspace = (60 - textheight("×¢²á")) / 2;
+			outtextxy(loginX + 50 + 220 + hspace, loginY + 250 + vspace, "×¢²á");
 		}
 		else
 		{
 			setfillcolor(RGB(189, 172, 162));
 			solidrectangle(loginX + 50 + 220, loginY + 250, loginX + 50 + 220 + 180, loginY + 310);
-			settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-			int hspace = (180 - textwidth("æ³¨å†Œ")) / 2;
-			int vspace = (60 - textheight("æ³¨å†Œ")) / 2;
-			outtextxy(loginX + 50 + 220 + hspace, loginY + 250 + vspace, "æ³¨å†Œ");
+			settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+			int hspace = (180 - textwidth("×¢²á")) / 2;
+			int vspace = (60 - textheight("×¢²á")) / 2;
+			outtextxy(loginX + 50 + 220 + hspace, loginY + 250 + vspace, "×¢²á");
 		}
 
 
 		outtextxy(loginX + 470, loginY, "X");
 		EndBatchDraw();
 
-		while (peekmessage(&msg)) 
+		while (peekmessage(&msg))
 		{
-			switch (msg.message) 
+			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				// æ£€æŸ¥æ˜¯å¦ç‚¹å‡»äº†è¾“å…¥æ¡†
-				namein = button(loginX + 50, loginY + 100,loginX + 50 + 500 - 100,loginY + 100 + 50,msg.x, msg.y);
-				wordin = button(loginX + 50, loginY + 180,loginX + 50 + 500 - 100,loginY + 180 + 50,msg.x, msg.y);
+				// ¼ì²éÊÇ·ñµã»÷ÁËÊäÈë¿ò
+				namein = button(loginX + 50, loginY + 100, loginX + 50 + 500 - 100, loginY + 100 + 50, msg.x, msg.y);
+				wordin = button(loginX + 50, loginY + 180, loginX + 50 + 500 - 100, loginY + 180 + 50, msg.x, msg.y);
 				if (button(loginX + 50, loginY + 250, loginX + 50 + 180, loginY + 310, msg.x, msg.y))
 				{
 					if (checkUser(nametext, passtext))
 					{
 						issignin = true;
 						playername = nametext;
-						running = false;//ç¡®è®¤å¯†ç 
+						running = false;//È·ÈÏÃÜÂë
 					}
-					
+
 					cleardevice();
 
 				}
 				if (button(loginX + 50 + 220, loginY + 250, loginX + 50 + 220 + 180, loginY + 310, msg.x, msg.y))
 				{
-					registerUser(nametext,passtext);
-					running = false;//æ³¨å†Œ
+					registerUser(nametext, passtext);
+					running = false;//×¢²á
 					cleardevice();
 
 				}
@@ -874,36 +871,36 @@ void signin()
 				{
 					cleardevice();
 
-					running = false;//å…³é—­
+					running = false;//¹Ø±Õ
 				}
 				break;
 
 			case WM_CHAR:
-				if (namein) 
+				if (namein)
 				{
-					if (msg.vkcode == '\b') 
-					{ 
+					if (msg.vkcode == '\b')
+					{
 						if (!nametext.empty()) {
 							nametext.pop_back();
 						}
-					}//åˆ é™¤
-					else if (msg.vkcode >= 32 && msg.vkcode <= 126 && nametext.length() <= 20) 
-					{ 
+					}//É¾³ı
+					else if (msg.vkcode >= 32 && msg.vkcode <= 126 && nametext.length() <= 20)
+					{
 						nametext += (char)msg.vkcode;
-					}//è¾“å…¥
+					}//ÊäÈë
 				}
-				else if (wordin) 
+				else if (wordin)
 				{
-					if (msg.vkcode == '\b') 
-					{ 
+					if (msg.vkcode == '\b')
+					{
 						if (!passtext.empty()) {
 							passtext.pop_back();
 						}
-					}//åˆ é™¤
-					else if (msg.vkcode >= 32 && msg.vkcode <= 126 && passtext.length() <= 20) 
-					{ 
+					}//É¾³ı
+					else if (msg.vkcode >= 32 && msg.vkcode <= 126 && passtext.length() <= 20)
+					{
 						passtext += (char)msg.vkcode;
-					}//è¾“å…¥
+					}//ÊäÈë
 				}
 				break;
 			}
@@ -911,24 +908,24 @@ void signin()
 	}
 
 }
-void rankmenu() 
+void GameUI::rankmenu()
 {
 	ExMessage msg = { 0 };
-	int scrollOffset = 0; // æ»šåŠ¨åç§»é‡
-	const int maxScroll = 0; // æœ€å¤§æ»šåŠ¨é‡
-	const int minScroll = -(150 + BOX_COUNT * 70 - (720 - 350)); // æœ€å°æ»šåŠ¨é‡
+	int scrollOffset = 0; // ¹ö¶¯Æ«ÒÆÁ¿
+	const int maxScroll = 0; // ×î´ó¹ö¶¯Á¿
+	const int minScroll = -(150 + BOX_COUNT * 70 - (720 - 350)); // ×îĞ¡¹ö¶¯Á¿
 	cleardevice();
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();
 
 	int hspace = 0;
 
-	while (1) 
+	while (1)
 	{
 		BeginBatchDraw();
 		cleardevice();
-		drawBoxes(scrollOffset,playername,issignin);
-		buttoncolor((720 - 420) / 2, 150 + 200 + scrollOffset + BOX_COUNT * 70 + 150, (720 - 420) / 2 + 420, 150 + 200 + scrollOffset + BOX_COUNT * 70 + 300, msg.x, msg.y, "ç¡®  è®¤");
+		drawBoxes(scrollOffset, playername, issignin);
+		buttoncolor((720 - 420) / 2, 150 + 200 + scrollOffset + BOX_COUNT * 70 + 150, (720 - 420) / 2 + 420, 150 + 200 + scrollOffset + BOX_COUNT * 70 + 300, msg.x, msg.y, "È·  ÈÏ");
 		EndBatchDraw();
 
 		if (peekmessage(&msg, EX_MOUSE)) {
@@ -942,7 +939,7 @@ void rankmenu()
 				break;
 
 			case WM_MOUSEWHEEL:
-				scrollOffset += msg.wheel / 120 * 30; // è°ƒæ•´æ»šåŠ¨é€Ÿåº¦
+				scrollOffset += msg.wheel / 120 * 30; // µ÷Õû¹ö¶¯ËÙ¶È
 
 				if (scrollOffset > maxScroll) scrollOffset = maxScroll;
 				if (scrollOffset < minScroll) scrollOffset = minScroll;
@@ -951,64 +948,63 @@ void rankmenu()
 		}
 	}
 }
-
-void startmenu()
+void GameUI::startmenu()
 {
 	ExMessage msg = { 0 };
-	//èƒŒæ™¯
+	//±³¾°
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();
 
-	
-	
-	//æŒ‰é”®
+
+
+	//°´¼ü
 	int check = 1;
 	while (check)
 	{
 		if (peekmessage(&msg, EX_MOUSE))
 		{
-			//æŒ‰é’®
+			//°´Å¥
 			BeginBatchDraw();
-			//2048æ–‡å­—
-			settextstyle(200, 0, "å¾®è½¯é›…é»‘");
+			//2048ÎÄ×Ö
+			settextstyle(200, 0, "Î¢ÈíÑÅºÚ");
 			setbkmode(TRANSPARENT);
 			settextcolor(DARKGRAY);
 			int hspace = (320 - textwidth("2048")) / 2;
 			int vspace = (200 - textheight("2048")) / 2;
 			outtextxy(200 + hspace, vspace, "2048");
-		
-			buttoncolor(150, 230, 150 + 420, 230 + 80, msg.x, msg.y, "å¼€ å§‹ æ¸¸ æˆ");
-			buttoncolor(150, 360, 150 + 420, 360 + 80, msg.x, msg.y, "æ¸¸ æˆ è§„ åˆ™");
-			buttoncolor(150, 490, 150 + 420, 490 + 80, msg.x, msg.y, "æŒ‰ é”® è¯´ æ˜");
-			buttoncolor(150, 620, 150 + 420, 620 + 80, msg.x, msg.y, "ç§¯ åˆ† æ’ å");
-			buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "é€€ å‡º æ¸¸ æˆ");
-			if (msg.x >= 20 && msg.x <= 20+60 && msg.y >= 10 && msg.y <= 10+40)
+
+			buttoncolor(150, 230, 150 + 420, 230 + 80, msg.x, msg.y, "¿ª Ê¼ ÓÎ Ï·");
+			buttoncolor(150, 360, 150 + 420, 360 + 80, msg.x, msg.y, "ÓÎ Ï· ¹æ Ôò");
+			buttoncolor(150, 490, 150 + 420, 490 + 80, msg.x, msg.y, "°´ ¼ü Ëµ Ã÷");
+			buttoncolor(150, 620, 150 + 420, 620 + 80, msg.x, msg.y, "»ı ·Ö ÅÅ Ãû");
+			buttoncolor(150, 750, 150 + 420, 750 + 80, msg.x, msg.y, "ÍË ³ö ÓÎ Ï·");
+			if (msg.x >= 20 && msg.x <= 20 + 60 && msg.y >= 10 && msg.y <= 10 + 40)
 			{
 				setfillcolor(RGB(125, 125, 125));
 				solidrectangle(20, 10, 20 + 60, 10 + 30);
-				settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-				int hspace = (60 - textwidth("ç™»å½•")) / 2;
-				int vspace = (30 - textheight("ç™»å½•")) / 2;
-				outtextxy(20 + hspace, 10 + vspace, "ç™»å½•");
+				settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+				int hspace = (60 - textwidth("µÇÂ¼")) / 2;
+				int vspace = (30 - textheight("µÇÂ¼")) / 2;
+				outtextxy(20 + hspace, 10 + vspace, "µÇÂ¼");
 			}
 			else
 			{
 				setfillcolor(RGB(189, 172, 162));
 				solidrectangle(20, 10, 20 + 60, 10 + 30);
-				settextstyle(30, 0, "å¾®è½¯é›…é»‘");
-				int hspace = (60 - textwidth("ç™»å½•")) / 2;
-				int vspace = (30 - textheight("ç™»å½•")) / 2;
-				outtextxy(20 + hspace, 10 + vspace, "ç™»å½•");
+				settextstyle(30, 0, "Î¢ÈíÑÅºÚ");
+				int hspace = (60 - textwidth("µÇÂ¼")) / 2;
+				int vspace = (30 - textheight("µÇÂ¼")) / 2;
+				outtextxy(20 + hspace, 10 + vspace, "µÇÂ¼");
 			}
-			settextstyle(22, 0, "å¾®è½¯é›…é»‘");
+			settextstyle(22, 0, "Î¢ÈíÑÅºÚ");
 			if (issignin)
 			{
-				outtextxy(20, 50, "å·²ç™»å½•");
+				outtextxy(20, 50, "ÒÑµÇÂ¼");
 
 			}
 			else
 			{
-				outtextxy(20, 50, "æ¸¸å®¢çŠ¶æ€");
+				outtextxy(20, 50, "ÓÎ¿Í×´Ì¬");
 			}
 			EndBatchDraw();
 
@@ -1018,48 +1014,41 @@ void startmenu()
 			switch (msg.message)
 			{
 			case WM_LBUTTONDOWN:
-				if (button(150, 230, 150 + 420, 230 + 80, msg.x, msg.y))//å¼€å§‹æ¸¸æˆ
+				if (button(150, 230, 150 + 420, 230 + 80, msg.x, msg.y))//¿ªÊ¼ÓÎÏ·
 				{
-					int board[row][col];
-					for (int i = 0;i < row;i++)
-					{
-						for (int j = 0;j < col;j++)
-						{
-							board[i][j] = 0;
-						}
-					}
-					gamemenu(board,issignin);
+					
+					gamemenu(this->board, issignin);
 
 				}
-				if (button(150, 360, 150 + 420, 360 + 80, msg.x, msg.y))//æ¸¸æˆè§„åˆ™
+				if (button(150, 360, 150 + 420, 360 + 80, msg.x, msg.y))//ÓÎÏ·¹æÔò
 				{
 					secondmenu();
 
 				}
-				if (button(150, 490, 150 + 420, 490 + 80, msg.x, msg.y))//æŒ‰é”®è¯´æ˜
+				if (button(150, 490, 150 + 420, 490 + 80, msg.x, msg.y))//°´¼üËµÃ÷
 				{
 					cleardevice();
 					thirdmenu();
 				}
-				if (button(150, 620, 150 + 420, 620 + 80, msg.x, msg.y))//ç§¯åˆ†æ’å
+				if (button(150, 620, 150 + 420, 620 + 80, msg.x, msg.y))//»ı·ÖÅÅÃû
 				{
 					rankmenu();
 
 				}
-				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//å…³é—­æ¸¸æˆ
+				if (button(150, 750, 150 + 420, 750 + 80, msg.x, msg.y))//¹Ø±ÕÓÎÏ·
 				{
 					closegraph();
 					exit(0);
 				}
-				
-					if (button(20, 10, 20 + 60, 10+ 30, msg.x, msg.y))//ç™»å½•
-					{
-						if (!issignin)
-						{
-							signin();
-						}
 
+				if (button(20, 10, 20 + 60, 10 + 30, msg.x, msg.y))//µÇÂ¼
+				{
+					if (!issignin)
+					{
+						signin();
 					}
+
+				}
 				break;
 
 			}

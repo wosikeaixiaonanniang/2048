@@ -1,6 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "header.h"
-
+#include "ui.h"
+#include "gamecore.h"
 
 
 int main()
@@ -8,10 +9,11 @@ int main()
 	playername = "name";
 	issignin = false;
 	usercheck = false;
+	GameUI ui;
 	FreeConsole();
 	initgraph(720, 900);
 	setbkcolor(RGB(254, 246, 238));
 	cleardevice();
-	startmenu();
+	ui.startmenu();
 	return 0;
 }
